@@ -1,0 +1,8 @@
+[
+    {"id":"1","name":"向日葵","icon":"ui/tree/cz","unlocklv":"0","plantcost":"400","addExpPer":"200","growthCount":"1","growthTime":"3","waterCost":"1","waterSaveTime":"0.5","waterAddExp":"100"},
+    {"id":"2","name":"百合","icon":"ui/tree/xg","unlocklv":"5","plantcost":"600","addExpPer":"300","growthCount":"1","growthTime":"4","waterCost":"1","waterSaveTime":"0.5","waterAddExp":"150"},
+    {"id":"3","name":"郁金香","icon":"ui/tree/xj","unlocklv":"10","plantcost":"800","addExpPer":"400","growthCount":"1","growthTime":"5","waterCost":"1","waterSaveTime":"0.5","waterAddExp":"200"},
+    {"id":"4","name":"兰花","icon":"ui/tree/nm","unlocklv":"15","plantcost":"1000","addExpPer":"500","growthCount":"1","growthTime":"6","waterCost":"1","waterSaveTime":"0.5","waterAddExp":"250"},
+    {"id":"5","name":"月季","icon":"ui/tree/lm","unlocklv":"20","plantcost":"1200","addExpPer":"600","growthCount":"1","growthTime":"7","waterCost":"1","waterSaveTime":"0.5","waterAddExp":"300"},
+    {"id":"6","name":"玫瑰","icon":"ui/tree/yt","unlocklv":"25","plantcost":"1400","addExpPer":"700","growthCount":"1","growthTime":"8","waterCost":"1","waterSaveTime":"0.5","waterAddExp":"350"}
+    ]

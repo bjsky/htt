@@ -1,0 +1,15 @@
+[
+    {"id":"1","name":"橙子","icon":"ui/fruit/cz","use":"1","noRotation":"0","isBig":"0","isNormal":"1","getResCount":"0","winMuti":"200","flyCoin":"5","weight":"0.2","weightsum":"40"},
+    {"id":"2","name":"西瓜","icon":"ui/fruit/xg","use":"1","noRotation":"0","isBig":"0","isNormal":"1","getResCount":"0","winMuti":"300","flyCoin":"5","weight":"0.15","weightsum":"45"},
+    {"id":"3","name":"香蕉","icon":"ui/fruit/xj","use":"1","noRotation":"0","isBig":"0","isNormal":"1","getResCount":"0","winMuti":"500","flyCoin":"10","weight":"0.11","weightsum":"55"},
+    {"id":"4","name":"柠檬","icon":"ui/fruit/nm","use":"1","noRotation":"0","isBig":"1","isNormal":"1","getResCount":"0","winMuti":"1000","flyCoin":"10","weight":"0.05","weightsum":"50"},
+    {"id":"5","name":"蓝莓","icon":"ui/fruit/lm","use":"1","noRotation":"0","isBig":"1","isNormal":"1","getResCount":"0","winMuti":"1500","flyCoin":"20","weight":"0.04","weightsum":"60"},
+    {"id":"6","name":"樱桃","icon":"ui/fruit/yt","use":"1","noRotation":"0","isBig":"1","isNormal":"1","getResCount":"0","winMuti":"2000","flyCoin":"20","weight":"0.03","weightsum":"60"},
+    {"id":"7","name":"分享","icon":"ui/fruit/share","use":"1","noRotation":"1","isBig":"0","isNormal":"0","getResCount":"0","winMuti":"3000","flyCoin":"20","weight":"0.2","weightsum":"600"},
+    {"id":"8","name":"果篮","icon":"ui/fruit/gl","use":"1","noRotation":"0","isBig":"0","isNormal":"1","getResCount":"0","winMuti":"10000","flyCoin":"0","weight":"0.03","weightsum":"300"},
+    {"id":"9","name":"repeat","icon":"ui/fruit/repeat","use":"1","noRotation":"1","isBig":"0","isNormal":"0","getResCount":"0","winMuti":"0","flyCoin":"0","weight":"0.1","weightsum":"0"},
+    {"id":"10","name":"种植","icon":"ui/fruit/zz","use":"1","noRotation":"0","isBig":"0","isNormal":"0","getResCount":"0","winMuti":"0","flyCoin":"0","weight":"0","weightsum":"0"},
+    {"id":"11","name":"采摘","icon":"ui/fruit/handIme","use":"1","noRotation":"0","isBig":"0","isNormal":"0","getResCount":"0","winMuti":"0","flyCoin":"0","weight":"0","weightsum":"0"},
+    {"id":"12","name":"偷取","icon":"ui/fruit/repeat","use":"0","noRotation":"1","isBig":"0","isNormal":"0","getResCount":"0","winMuti":"0","flyCoin":"0","weight":"0","weightsum":"0"},
+    {"id":"13","name":"水滴10","icon":"ui/fruit/water","use":"1","noRotation":"1","isBig":"0","isNormal":"0","getResCount":"10","winMuti":"0","flyCoin":"0","weight":"0.1","weightsum":"0"}
+    ]
