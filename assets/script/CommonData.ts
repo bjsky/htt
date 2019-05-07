@@ -105,6 +105,12 @@ export default class CommonData {
             UI.createPopUp(ResConst.UpgradeUI,{});
         }
     }
+
+    //鲜花倍数
+    public getFlowerMuti():number{
+        var flowerMuti:number = Number(CFG.getCfgByKey(ConfigConst.Constant,"key","flowerSlotUp")[0].value);
+        return Math.floor((1+ Common.resInfo.flower * flowerMuti)*100)/100;
+    }
 }
 
 export var Common:CommonData = CommonData.getInstance();

@@ -11,5 +11,5 @@
     {"id":"10","name":"种植","icon":"ui/fruit/zz","use":"1","noRotation":"0","isBig":"0","isNormal":"0","getResCount":"0","winMuti":"0","flyCoin":"0","weight":"0","weightsum":"0"},
     {"id":"11","name":"采摘","icon":"ui/fruit/handIme","use":"1","noRotation":"0","isBig":"0","isNormal":"0","getResCount":"0","winMuti":"0","flyCoin":"0","weight":"0","weightsum":"0"},
     {"id":"12","name":"偷取","icon":"ui/fruit/repeat","use":"0","noRotation":"1","isBig":"0","isNormal":"0","getResCount":"0","winMuti":"0","flyCoin":"0","weight":"0","weightsum":"0"},
-    {"id":"13","name":"水滴10","icon":"ui/fruit/water","use":"1","noRotation":"1","isBig":"0","isNormal":"0","getResCount":"10","winMuti":"0","flyCoin":"0","weight":"0.1","weightsum":"0"}
+    {"id":"13","name":"水滴10","icon":"ui/fruit/water","use":"1","noRotation":"1","isBig":"0","isNormal":"0","getResCount":"10","winMuti":"0","flyCoin":"0","weight":"0","weightsum":"0"}
     ]

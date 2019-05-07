@@ -8,6 +8,7 @@ export enum ResType{
     Gold = 1,       //金币
     Water = 2,      //水滴
     Energy = 3,     //能量，后端不用
+    Flower = 4,     //鲜花
 }
 export class CSAddRes{
     //增加资源

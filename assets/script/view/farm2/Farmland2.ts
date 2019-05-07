@@ -11,6 +11,7 @@ import { UI } from "../../core/UIManager";
 import { MessagePanelType } from "../MessagePanel";
 import LoadSprite from "../../component/LoadSprite";
 import StringUtil from "../../utils/StringUtil";
+import { ResType } from "../../message/MsgAddRes";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -84,6 +85,7 @@ export default class Farmland2 extends UIBase{
 
     onEnable(){
         EVENT.on(GameEvent.Farm_State_Change,this.onFarmStateChange,this);
+        EVENT.on(GameEvent.RES_Change,this.onResChange,this);
 
         this.lockBg.node.on(cc.Node.EventType.TOUCH_START,this.onLockTouch,this);
         this.growthBg.node.on(cc.Node.EventType.TOUCH_START,this.onGrowthTouch,this)
@@ -95,6 +97,8 @@ export default class Farmland2 extends UIBase{
 
     onDisable(){
         EVENT.off(GameEvent.Farm_State_Change,this.onFarmStateChange,this);
+        EVENT.off(GameEvent.RES_Change,this.onResChange,this);
+
         this.lockBg.node.off(cc.Node.EventType.TOUCH_START,this.onLockTouch,this);
         this.growthBg.node.off(cc.Node.EventType.TOUCH_START,this.onGrowthTouch,this)
         this.unlockBg.node.off(cc.Node.EventType.TOUCH_START,this.onUpLevelTouch,this)
@@ -109,19 +113,39 @@ export default class Farmland2 extends UIBase{
         this._curState = state;
         this.updateView();
     }
+    private onResChange(e){
+        var type = e.type;
+        if(type == ResType.Gold){
+            if(this._state == Farmland2State.Plant){
+                if(Common.resInfo.gold<this._plantCost){
+                    this.plantCost.node.color = new cc.Color().fromHEX("#ff0000");
+                }else{
+                    this.plantCost.node.color = new cc.Color().fromHEX("#863819");
+                }
+            }else if(this._state == Farmland2State.upLv){
+                if(Common.resInfo.gold<this._upCost){
+                    this.upLvCost.node.color = new cc.Color().fromHEX("#ff0000");
+                }else{
+                    this.upLvCost.node.color = new cc.Color().fromHEX("#863819");
+                }
+            }
+        }else if(type == ResType.Flower){
+            if(this._state == Farmland2State.Lock){
+                this.showLock();
+            }
+        }
+    }
 
     private updateView(){
         var unlockIndex:number = Farm2.getUnlockFarmlandIndex();
         if(this._curState == FarmSceneState.Growth){
             if(this._farmland.treeType == 0){
                 if(unlockIndex>-1){
-                    if(this.index == unlockIndex){
-                        this._state = Farmland2State.Lock;
-                    }else if(this.index>unlockIndex){
-                        this._state = Farmland2State.Unplant;
-                    }else if(this.index < unlockIndex){
+                    if(this.index < unlockIndex){
                         this._state = Farmland2State.UnLock;
-                    } 
+                    }else{
+                        this._state = Farmland2State.Unplant;
+                    }
                 }else{
                     this._state = Farmland2State.UnLock;
                 }
@@ -131,7 +155,9 @@ export default class Farmland2 extends UIBase{
         }else if(this._curState == FarmSceneState.Plant){
             if(this._farmland.treeType == 0){
                 if(unlockIndex>-1){
-                    if(this.index >= unlockIndex){
+                    if(this.index == unlockIndex){
+                        this._state = Farmland2State.Lock;
+                    }else if(this.index > unlockIndex){
                         this._state = Farmland2State.Unplant;
                     }else{
                         this._state = Farmland2State.Plant;
@@ -198,7 +224,7 @@ export default class Farmland2 extends UIBase{
     }
     private showLock(){
         var count:number = Farm2.getUnlockNeedFlower(this.index);
-        this.lbLock.string ="<color=#ffffff><color=#FFF600>"+count+"</color> 解锁</c>";
+        this.lbLock.string ="<color=#ffffff><color=#FFF600>"+Common.resInfo.flower+"</color>/"+count+"</c>";
     }
 
     private _plantCost:number = 0;
@@ -215,6 +241,11 @@ export default class Farmland2 extends UIBase{
             
             this._plantCost = Number(cfg.unlock);
             this.plantCost.string = (this._plantCost==0)?"免费":StringUtil.formatReadableNumber(this._plantCost);
+            if(Common.resInfo.gold<this._plantCost){
+                this.plantCost.node.color = new cc.Color().fromHEX("#ff0000");
+            }else{
+                this.plantCost.node.color = new cc.Color().fromHEX("#863819");
+            }
             this.plantFlower.string = "+"+cfg.addFlower;
         }
     }
@@ -228,6 +259,11 @@ export default class Farmland2 extends UIBase{
             this.levelStr.string = this._farmland.level+"/"+totalLevel;
             this._upCost = Number(cfg.upCost);
             this.upLvCost.string = StringUtil.formatReadableNumber(this._upCost);
+            if(Common.resInfo.gold<this._upCost){
+                this.upLvCost.node.color = new cc.Color().fromHEX("#ff0000");
+            }else{
+                this.upLvCost.node.color = new cc.Color().fromHEX("#863819");
+            }
             this.levelPro.progress = this._farmland.level/totalLevel;
             this.curFlower.string = cfg.flowerLevel;
         }
@@ -269,7 +305,7 @@ export default class Farmland2 extends UIBase{
 
     private onLockTouch(e){
         if(Common.resInfo.gold<this._plantCost){
-            UI.createPopUp(ResConst.MessgaePanel,{type:MessagePanelType.gotoSlot})
+            // UI.showTip("金币不足，采摘花田或转盘抽奖");
             return;
         }
 
@@ -280,7 +316,7 @@ export default class Farmland2 extends UIBase{
         if(this._isMaxLevel)
             return;
         if(Common.resInfo.gold<this._upCost){
-            UI.createPopUp(ResConst.MessgaePanel,{type:MessagePanelType.gotoSlot})
+            // UI.showTip("金币不足，采摘花田或转盘抽奖");
             return;
         }
 

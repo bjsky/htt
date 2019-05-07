@@ -2,6 +2,9 @@ import { SResInfo } from "./message/MsgLogin";
 import { Common } from "./CommonData";
 import { ConfigConst } from "./GlobalData";
 import { CFG } from "./core/ConfigManager";
+import { EVENT } from "./core/EventController";
+import GameEvent from "./GameEvent";
+import { ResType } from "./message/MsgAddRes";
 
 export default class ResInfo {
     //精力
@@ -24,7 +27,15 @@ export default class ResInfo {
     }
 
     public updateInfo(sInfo:SResInfo){
+        var preGold = this.gold;
+        var preFlower = this.flower;
         this.initFormServer(sInfo);
+        if(this.gold!=preGold){
+            EVENT.emit(GameEvent.RES_Change,{type:ResType.Gold});
+        }
+        if(this.flower != preFlower){
+            EVENT.emit(GameEvent.RES_Change,{type:ResType.Flower});
+        }
     }
 
     public cloneServerInfo():SResInfo{

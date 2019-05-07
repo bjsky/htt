@@ -10,6 +10,7 @@ import PathUtil from "../utils/PathUtil";
 import { SOUND } from "../core/SoundManager";
 import MsgAddRes, { ResType } from "../message/MsgAddRes";
 import { Game } from "../GameController";
+import StringUtil from "../utils/StringUtil";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -80,6 +81,7 @@ export default class AnimUi extends UIBase {
     @property(LoadSprite)  sprRes: LoadSprite = null;
     @property(cc.Label)  msResCount: cc.Label = null;
     @property(cc.Sprite)  sprWater: cc.Sprite = null;
+    @property(cc.Label) lblReslut:cc.Label= null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -94,15 +96,15 @@ export default class AnimUi extends UIBase {
 
     public showAnim(anim:SlotResultAnim){
         if(anim.type == SlotResultAniEnum.Repeat){
-            this.showNotice(this.sprRepeat.node,anim);
+            this.showNotice(this.sprRepeat.node,anim,"再来一次");
         }else if(anim.type == SlotResultAniEnum.BigWin){
-            this.showSpecialNotice(this.sprBigWin.node,anim);
+            this.showSpecialNotice(this.sprBigWin.node,anim,"中大奖了!");
         }else if(anim.type == SlotResultAniEnum.Share){
-            this.showSpecialNotice(this.sprShare.node,anim);
+            this.showSpecialNotice(this.sprShare.node,anim,"分享得金币");
         }else if(anim.type == SlotResultAniEnum.Plant){
-            this.showSpecialNotice(this.sprPlant.node,anim);
+            this.showSpecialNotice(this.sprPlant.node,anim,"");
         }else if(anim.type == SlotResultAniEnum.Pick){
-            this.showSpecialNotice(this.sprPick.node,anim);
+            this.showSpecialNotice(this.sprPick.node,anim,"");
         }
         else if(anim.type == SlotResultAniEnum.Hevart){
             this.labelMuti.string = anim.addGold.toString();
@@ -111,7 +113,7 @@ export default class AnimUi extends UIBase {
             this.sprMuti.node.x = -totalw/2;
             this.labelMuti.node.x = totalw/2-this.labelMuti.node.width;
             this.sprBG.node.width = totalw + 50;
-            this.showNotice(this.nodeMuti,anim);
+            this.showNotice(this.nodeMuti,anim,"金币 +"+StringUtil.formatReadableNumber(anim.addGold));
 
             NET.send(MsgSlotWin.create(anim.addGold),(msg:MsgSlotWin)=>{
                 if(msg && msg.resp){
@@ -145,7 +147,7 @@ export default class AnimUi extends UIBase {
             this.showCoinFly(anim);
         }else if(anim.type == SlotResultAniEnum.SlotGetRes){
             if(anim.resType == ResType.Water){
-                this.showNotice(this.sprWater.node,anim);
+                this.showNotice(this.sprWater.node,anim,"");
             }
         }
     }
@@ -162,10 +164,11 @@ export default class AnimUi extends UIBase {
         this.sprWater.node.active = false;
     }
 
-    private showNotice(spr:cc.Node,anim:SlotResultAnim){
+    private showNotice(spr:cc.Node,anim:SlotResultAnim,str:string){
         this.sprNode.active = true;
         this.sprBG.node.width = spr.width +50;
-        spr.active =true;
+        // spr.active =true;
+        this.lblReslut.string = str;
         this.sprNode.scale = 0.7;
         this.sprNode.opacity = 255;
         var seqOut = cc.sequence(cc.scaleTo(0.15,1).easing(cc.easeBackOut()),
@@ -178,15 +181,16 @@ export default class AnimUi extends UIBase {
             cc.fadeOut(0.5),
             cc.callFunc(()=>{
                 this.sprNode.active = false;
-                spr.active = false;
+                // spr.active = false;
             }));
         this.sprNode.runAction(seqOut);
     }
 
-    private showSpecialNotice(spr:cc.Node,anim:SlotResultAnim){
+    private showSpecialNotice(spr:cc.Node,anim:SlotResultAnim,str:string){
         this.sprNode.active = true;
         this.sprBG.node.width = spr.width +50;
-        spr.active = true;
+        // spr.active = true;
+        this.lblReslut.string = str;
         this.sprNode.scale = 0.7;
         this.sprNode.opacity = 255;
         if(anim.type == SlotResultAniEnum.BigWin){
@@ -202,7 +206,7 @@ export default class AnimUi extends UIBase {
             cc.fadeOut(0.5),
             cc.callFunc(()=>{
                 this.sprNode.active = false;
-                spr.active = false;
+                // spr.active = false;
             }));
         this.sprNode.runAction(seqOut);
     }

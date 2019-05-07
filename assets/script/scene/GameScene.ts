@@ -53,6 +53,9 @@ export default class GameScene extends SceneBase {
     @property(cc.Node) lightLeft: cc.Node = null;
     @property(cc.Node) lightRight: cc.Node = null;
     @property(cc.Label) bigwinTimes: cc.Label = null;
+
+
+    @property(cc.Label) flowerAdd: cc.Label = null;
     
 
     @property(cc.Button) btnToFarm: cc.Button = null;
@@ -106,6 +109,7 @@ export default class GameScene extends SceneBase {
 
     private _gameSlot:GameSlot;
     private _addLifeFlyInterval:number = 3;
+    private _flowerMuti:number = 1;
 
     private initScene(){
 
@@ -117,6 +121,8 @@ export default class GameScene extends SceneBase {
         this.schedule(this.lifeReturnFly,this._addLifeFlyInterval,cc.macro.REPEAT_FOREVER);
         this.onEnergyUIUpdate(null);
         this.updateCostView();
+
+        this.flowerAdd.string = "×"+ Common.getFlowerMuti();
     }
     private onEnergyUIUpdate(e){
         Common.resInfo.updateEnergy();

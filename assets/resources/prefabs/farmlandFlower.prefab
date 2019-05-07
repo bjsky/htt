@@ -400,7 +400,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 66.46000000000001,
+      "width": 65.06,
       "height": 50
     },
     "_anchorPoint": {
@@ -410,8 +410,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -13,
-      "y": -26,
+      "x": -11,
+      "y": -28,
       "z": 0
     },
     "_scale": {
@@ -456,14 +456,14 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 31,
-      "g": 255,
-      "b": 31,
+      "r": 255,
+      "g": 246,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 14.46,
+      "width": 28.92,
       "height": 50
     },
     "_anchorPoint": {
@@ -509,8 +509,8 @@
     "_srcBlendFactor": 1,
     "_dstBlendFactor": 771,
     "_useOriginalSize": true,
-    "_string": "4",
-    "_N$string": "4",
+    "_string": "12",
+    "_N$string": "12",
     "_fontSize": 26,
     "_lineHeight": 50,
     "_enableWrapText": true,
@@ -532,7 +532,7 @@
     "asset": {
       "__uuid__": "ffd35780-4aba-4e22-be45-5baf032e7e88"
     },
-    "fileId": "0aPu2dZgpEWJym2dF9SdwV",
+    "fileId": "18dAVEsH1NqZDNQ7taKMJ4",
     "sync": false
   },
   {
@@ -563,7 +563,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52,
+      "width": 36.14,
       "height": 50
     },
     "_anchorPoint": {
@@ -573,7 +573,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 14.46,
+      "x": 28.92,
       "y": -25,
       "z": 0
     },
@@ -609,8 +609,8 @@
     "_srcBlendFactor": 1,
     "_dstBlendFactor": 771,
     "_useOriginalSize": true,
-    "_string": "解锁",
-    "_N$string": "解锁",
+    "_string": "/23",
+    "_N$string": "/23",
     "_fontSize": 26,
     "_lineHeight": 50,
     "_enableWrapText": true,
@@ -632,7 +632,7 @@
     "asset": {
       "__uuid__": "ffd35780-4aba-4e22-be45-5baf032e7e88"
     },
-    "fileId": "61yLHai3pPg77/kjScJPBY",
+    "fileId": "61HNrvbYRBO62voPF5Pb94",
     "sync": false
   },
   {
@@ -645,7 +645,7 @@
     "_enabled": true,
     "_fontFamily": "Arial",
     "_isSystemFontUsed": true,
-    "_N$string": "<color=#ffffff><color=#1FFF1F>4</color>解锁</c>",
+    "_N$string": "<color=#ffffff><color=#FFF600>12</color>/23</c>",
     "_N$horizontalAlign": 0,
     "_N$fontSize": 26,
     "_N$font": null,
@@ -704,8 +704,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -38,
-      "y": -26,
+      "x": -34,
+      "y": -28,
       "z": 0
     },
     "_scale": {

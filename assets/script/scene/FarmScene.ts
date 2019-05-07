@@ -250,8 +250,14 @@ export default class FarmScene extends SceneBase{
         }
         var unlockIndex:number = Farm2.getUnlockFarmlandIndex();
         if(preIndex>-1 && unlockIndex!=preIndex){
-            var farmUnlock:Farmland2 = this.getFarmland2WithIdx(preIndex);
-            farmUnlock.updateLock();
+            var farmPlant:Farmland2 = this.getFarmland2WithIdx(preIndex);
+            farmPlant.updateLock();
+            if(unlockIndex>-1){
+                var farmUnlock:Farmland2 = this.getFarmland2WithIdx(unlockIndex);
+                if(farmUnlock){
+                    farmUnlock.updateLock();
+                }
+            }
         }
     }   
 

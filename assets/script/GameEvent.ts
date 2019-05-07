@@ -52,4 +52,6 @@ export default class GameEvent {
     public static Up_Level_Tree:string = "Up_Level_Tree";
     //飞资源
     public static Fly_Res_End:string ="Fly_Res_End";
+    //res
+    public static RES_Change:string ="RES_Change";
 }

@@ -221,13 +221,21 @@ export default class UIManager{
         connect.showConnect(false);
     }
 
+    private _tipShow:boolean =false;
     /**
      * 一个漂浮提示
      * @param content 内容
      * @param pos 位置
      */
     public showTip(content:string){
-        this.loadUI(ResConst.TipPanel,{content:content},this.TipLayer);
+        if(this._tipShow){
+            return;
+        }
+        this._tipShow = true;
+        this.loadUI(ResConst.TipPanel,{content:content,complete:this.showTipComplete.bind(this)},this.TipLayer);
+    }
+    private showTipComplete(){
+        this._tipShow = false;
     }
 
     public showAlert(content:string,okCallback?:Function,cancelCallback?:Function,btnType:number = AlertBtnType.OKButton){

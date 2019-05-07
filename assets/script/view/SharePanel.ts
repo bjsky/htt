@@ -10,6 +10,7 @@ import { SceneEnum } from "../scene/SceneBase";
 import FarmScene from "../scene/FarmScene";
 import GameScene from "../scene/GameScene";
 import { Wechat } from "../WeChatInterface";
+import StringUtil from "../utils/StringUtil";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -64,8 +65,8 @@ export default class SharePanel extends PopUpBase{
             this._muti = data.muti;
             this._addGold = data.addGold;
         }else if(this._type == ShareType.shareGetEnergy){
-            var leveCfg:any = CFG.getCfgDataById(ConfigConst.Level,Common.userInfo.level);
-            this._addEnergy = Number(leveCfg.shareEnergy);
+            var energy:any = CFG.getCfgByKey(ConfigConst.Constant,"key","shareEnergy")[0].value;
+            this._addEnergy = Number(energy);
         }else if(this._type == ShareType.shareGetWater
             ||this._type == ShareType.seeVideoGetWater){
             this._addWater = Number(CFG.getCfgByKey(ConfigConst.Constant,"key","shareWater")[0].value)
@@ -98,8 +99,8 @@ export default class SharePanel extends PopUpBase{
             this.btnShare.node.active = true;
         }
         if(this._type == ShareType.shareGetGold){
-            this.lblCoin.string = "<color=#f6ff00><b>"+this._addGold+"</c>";
-            this.lblDesc.string = "分享好友立即获得\n"+this._muti+"倍奖励！";
+            this.lblDesc.string = "分享好友立即获得金币：";
+            this.lblCoin.string = "<color=#f6ff00><b>"+StringUtil.formatReadableNumber(this._addGold)+"</c>";
         }else if(this._type == ShareType.shareGetEnergy){
             this.lblDesc.string = "分享好友立即获得精力:";
             this.lblCoin.string = "<color=#f6ff00><b>"+this._addEnergy+"</c>";
@@ -120,11 +121,8 @@ export default class SharePanel extends PopUpBase{
         var btnFrom:cc.Vec2 = this.btnShare.node.parent.convertToWorldSpaceAR(this.btnShare.node.position);
         var scene = Scene.getCurScene();
         var btnTo:cc.Vec2;
-        if(scene.sceneName == SceneEnum.Farm){
-            var iconWater = (scene as FarmScene).iconWater;
-            btnTo = iconWater.parent.convertToWorldSpaceAR(iconWater.position);
-        }else if(scene.sceneName == SceneEnum.Game){
-            var iconEnergy = (scene as GameScene).iconEnergy;
+        if(this._type == ShareType.shareGetEnergy){
+            var iconEnergy = (Scene.getCurScene() as GameScene).iconEnergy;
             btnTo = iconEnergy.parent.convertToWorldSpaceAR(iconEnergy.position);
         }
         Share.shareAppMessage(()=>{
@@ -134,7 +132,7 @@ export default class SharePanel extends PopUpBase{
                 Share.shareGetEnergy(this._addEnergy,btnFrom,btnTo);
             }
             else if(this._type == ShareType.shareGetWater){
-                Share.shareGetWater(this._addWater,btnFrom,btnTo);
+                // Share.shareGetWater(this._addWater,btnFrom,btnTo);
             }
             this.onClose(e);
         },()=>{
@@ -147,15 +145,15 @@ export default class SharePanel extends PopUpBase{
         var btnFrom:cc.Vec2 = this.btnShare.node.parent.convertToWorldSpaceAR(this.btnShare.node.position);
         var scene = Scene.getCurScene();
         var btnTo:cc.Vec2;
-        if(scene.sceneName == SceneEnum.Farm){
-            var iconWater = (scene as FarmScene).iconWater;
-            btnTo = iconWater.parent.convertToWorldSpaceAR(iconWater.position);
-        }
+        // if(scene.sceneName == SceneEnum.Farm){
+        //     var iconWater = (scene as FarmScene).iconWater;
+        //     btnTo = iconWater.parent.convertToWorldSpaceAR(iconWater.position);
+        // }
         if(this._type == ShareType.seeVideoGetWater){
             Wechat.showVideoAd((result:SeeVideoResult)=>{
                 if(result == SeeVideoResult.Complete){
-                    Share.seeVideoGetWater(this._addWater,btnFrom,btnTo);
-                    this.onClose(e);
+                    // Share.seeVideoGetWater(this._addWater,btnFrom,btnTo);
+                    // this.onClose(e);
                 }else if(result == SeeVideoResult.LoadError){
                     UI.showTip("视频加载失败！请稍候再来");
                 }else if(result == SeeVideoResult.NotComplete){
