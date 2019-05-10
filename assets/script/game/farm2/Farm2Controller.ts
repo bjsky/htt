@@ -10,12 +10,6 @@ import { ConfigConst } from "../../GlobalData";
 import MsgPickFarm from "../../message/MsgPickFarm";
 import MsgUpdateFarm from "../../message/MsgUpdateFarm";
 
-export class FarmLandUnlockInfo extends FarmlandInfo{
-    public flowerId:number = 0;
-    public flowerName:string = "";
-    public curCount:number = 0;
-    public totalCount:number = 0;
-}
 export default class Farm2Controller {
     private static _instance: Farm2Controller = null;
     public static getInstance(): Farm2Controller {
@@ -29,29 +23,15 @@ export default class Farm2Controller {
     public Growth_Max_Count:number = 50;
 
     private _farmlandMap:any =  {};
-    private _lockMap:any =null;
-
-    private initLockMap(){
-        var lockCfg:any = CFG.getCfgByKey(ConfigConst.Constant,"key","farmlandlock")[0].value;
-        var arr = lockCfg.split("|");
-        this._lockMap = {};
-        arr.forEach((lockstr:string) => {
-            var index:number = Number(lockstr.split(";")[0]);
-            var flower:number = Number(lockstr.split(";")[1]);
-            this._lockMap[index] = flower;
-        });
-    }
+    // private _lockMap:any =null;
+    
     public initFromServer(farmlands:SFarmlandInfo[]){
-        if(this._lockMap == null){
-            this.initLockMap();
-        }
         this._farmlandMap = {};
         farmlands.forEach((tr:SFarmlandInfo)=>{
             var farmland:FarmlandInfo = new FarmlandInfo();
             farmland.initFromServer(tr);
             this._farmlandMap[farmland.index] = farmland;
         });
-
         var unlockFarmland:FarmlandInfo = null;
         for(var i:number=0 ;i<this.Farmland_Count;i++){
             if(this._farmlandMap[i]== undefined){
@@ -60,31 +40,45 @@ export default class Farm2Controller {
                 this._farmlandMap[i] = unlockFarmland;
             }
         }
-    }
-    /**
-     * 农田数量
-     */
-    public getFarmlandCount():number{
-        var i:number = 0;
-        for(var key in this._farmlandMap){
-            i++;
-        }
-        return i;
-    }
 
-    public getUnlockFarmlandIndex():number{
-        var index:number = -1;
-        for(var key in this._lockMap){
-            var needFlower:number = this._lockMap[key];
+        this.Growth_Max_Count = Number(CFG.getCfgByKey(ConfigConst.Constant,"key","goldStageCount")[0].value)
+    }
+    public getFarmlandLockedIndex():number{
+        var lockedIndex:number = -1;
+        var lockCfg:any = CFG.getCfgGroup(ConfigConst.Farmland);
+        
+        for(var key in lockCfg){
+            var needFlower:number = Number(lockCfg[key].unlockFlower);
             if(Common.resInfo.flower < needFlower){
-                index = Number(key);
+                lockedIndex = Number(key)-1;
                 break;
             }
         }
-        return index;
+        return lockedIndex;
     }
-    public getUnlockNeedFlower(index){
-        return Number(this._lockMap[index]);
+    public getUnlockCfg(index:number){
+        var farmId = (index+1);
+        return  CFG.getCfgDataById(ConfigConst.Farmland,farmId);
+    }
+    public getNextSceneFlower(){
+        var cfg = CFG.getCfgDataById(ConfigConst.Farmland,10);
+        return Number(cfg.unlockFlower);
+    }
+    public getFlowerisPlant(mapid:number,flowerid:number):boolean{
+        if(mapid>1){
+            return false;
+        }else{
+            for(var i:number=0 ;i<this.Farmland_Count;i++){
+                var farmland:FarmlandInfo = this.getFarmlandAtIndex(i);
+                if(farmland.treeType>=flowerid){
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    public isMapLock(mapid:number):boolean{
+        return mapid>1;
     }
 
     public getFarmlandAtIndex(index:number):FarmlandInfo{
@@ -95,28 +89,25 @@ export default class Farm2Controller {
         }
     }
 
-    public unlockFarmland(treeType:number,index:number,cost:number){
-        var startTime:number = 0;
-        var stageGold:number = 0;
-        if(treeType== 1){
-            stageGold = 0;
-            startTime = Common.getServerTime();
-        }else{
-            var info:FarmlandInfo = this.stageFarmland(index);
-            stageGold = info.stageGold;
-            startTime = info.growthStartTime;
-        }
-        var cfg:any = CFG.getCfgDataById(ConfigConst.Flower,treeType);
-        var addFlower:number = 0;
-        if(cfg){
-            addFlower = Number(cfg.addFlower);
-        }
-        NET.send(MsgUpdateFarm.create(index,treeType,1,startTime,stageGold,cost,addFlower),(msg:MsgPlant)=>{
+    public plantFarmland(treeType:number,index:number,cost:number){
+        var info:FarmlandInfo = this.stageFarmland(index);
+        var addFlower:number = Number(CFG.getCfgDataById(ConfigConst.Flower,treeType).addFlower);
+
+        NET.send(MsgUpdateFarm.create(index,treeType,1,info.growthStartTime,info.stageGold,cost,addFlower),(msg:MsgPlant)=>{
             if(msg && msg.resp){
-                var preIndex:number = this.getUnlockFarmlandIndex();
                 Common.resInfo.updateInfo(msg.resp.resInfo);
                 this.updateFarmland(msg.resp.farmland);
-                EVENT.emit(GameEvent.Plant_Tree,{index:index,seedId:msg.resp.farmland.treeType,preIndex:preIndex});
+                EVENT.emit(GameEvent.Plant_Tree,{index:index,seedId:msg.resp.farmland.treeType});
+            }
+        },this);
+    }
+
+    public unlockFarmland(treeType:number,index:number,cost:number){
+        NET.send(MsgUpdateFarm.create(index,treeType,1,Common.getServerTime(),0,cost,0),(msg:MsgPlant)=>{
+            if(msg && msg.resp){
+                Common.resInfo.updateInfo(msg.resp.resInfo);
+                this.updateFarmland(msg.resp.farmland);
+                EVENT.emit(GameEvent.Unlock_Tree,{index:index,seedId:msg.resp.farmland.treeType});
             }
         },this);
     }
@@ -152,7 +143,7 @@ export default class Farm2Controller {
         var farmland:FarmlandInfo = this.stageFarmland(index);
         if(farmland){
             var cfg:any = CFG.getCfgDataById(ConfigConst.Flower,farmland.treeType);
-            // var addFlower:number = 0; //Number(cfg.flowerOnce);
+            // var addFlower:number = Number(cfg.addFlower);
             // var addExp:number = 0;//Number(cfg.expOnce);
             console.log("addGold,",farmland.stageGold);
             NET.send(MsgPickFarm.create(index,farmland.growthStartTime,farmland.stageGold)
@@ -176,6 +167,7 @@ export default class Farm2Controller {
                     var sfarm:SFarmlandInfo = msg.resp.farmland;
                     this.updateFarmland(sfarm);
                     EVENT.emit(GameEvent.Up_Level_Tree,{index:msg.resp.farmland.index});
+
                 }
             },this);
         }

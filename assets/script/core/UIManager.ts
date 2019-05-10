@@ -7,6 +7,7 @@ import { AlertBtnType } from "../view/AlertPanel";
 import AnimUi, { SlotResultAnim } from "../view/AnimUi";
 import MainUI from "../view/MainUI";
 import Connect from "../scene/Connect";
+import SimpleGuide from "../view/SimpleGuide";
 
 /**
  * 管理各种界面单例,层级
@@ -26,9 +27,11 @@ export default class UIManager{
     //ui层
     public UILayer:cc.Node = null;
     public main:MainUI = null;
+    public guideView:SimpleGuide = null;
     //弹窗层级
     public PopupLayer:cc.Node = null;
     public AnimLayer:cc.Node = null;
+    public GuideLayer:cc.Node = null;
     public TipLayer:cc.Node = null;
     //剧情层级
     private _root:cc.Node = null;
@@ -45,6 +48,9 @@ export default class UIManager{
         this.main = this.UILayer.getComponent(MainUI);
         this.PopupLayer = root.getChildByName("PopupLayer");
         this.AnimLayer = root.getChildByName("AnimLayer");
+        this.GuideLayer = root.getChildByName("GuideLayer");
+        this.guideView = this.GuideLayer.children[0].getComponent(SimpleGuide);
+        this.guideView.node.active = false;
         this.TipLayer = root.getChildByName("TipLayer");
 
         this.initMaskLayer();

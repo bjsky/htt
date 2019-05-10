@@ -9,6 +9,7 @@ import ResInfo from "./ResInfo";
 import { Farm } from "./game/farm/FarmController";
 import { Wechat } from "./WeChatInterface";
 import { Farm2 } from "./game/farm2/Farm2Controller";
+import { Guide } from "./GuideController";
 
 export default class CommonData {
     private static _instance: CommonData = null;
@@ -53,6 +54,8 @@ export default class CommonData {
         Farm.initUnlock(data.unlockFarmland);
 
         Farm2.initFromServer(data.farmlands);
+
+        Guide.initGuide();
     }
 
     public getCostArr():Array<number>{
@@ -107,9 +110,18 @@ export default class CommonData {
     }
 
     //鲜花倍数
-    public getFlowerMuti():number{
-        var flowerMuti:number = Number(CFG.getCfgByKey(ConfigConst.Constant,"key","flowerSlotUp")[0].value);
-        return Math.floor((1+ Common.resInfo.flower * flowerMuti)*100)/100;
+    public getSlotMuti():number{
+        // var flowerMuti:number = Number(CFG.getCfgByKey(ConfigConst.Constant,"key","flowerSlotUp")[0].value);
+        // return Math.floor((1+ Common.resInfo.flower * flowerMuti)*100)/100;
+        var lastUnlockFarmlandId:number = 0;
+        var lockedIndex:number = Farm2.getFarmlandLockedIndex();
+        if(lockedIndex >-1){
+            lastUnlockFarmlandId = lockedIndex;
+        }else{
+            lastUnlockFarmlandId = 9;
+        }
+        var muti:number = Number(CFG.getCfgDataById(ConfigConst.Farmland,lastUnlockFarmlandId).slotMuti);
+        return muti;
     }
 }
 

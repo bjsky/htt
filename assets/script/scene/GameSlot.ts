@@ -55,7 +55,7 @@ export default class GameSlot{
             winAnim = new SlotResultAnim(SlotResultAniEnum.Hevart);
             winAnim.coinTo = UI.main.coinIcon.parent.convertToWorldSpaceAR(UI.main.coinIcon.position);
             var fruitCfg:any = CFG.getCfgDataById(ConfigConst.Fruit,slotArr[0]);
-            winAnim.muti = Number(fruitCfg.winMuti)*Common.getFlowerMuti();
+            winAnim.muti = Number(fruitCfg.winMuti)*Common.getSlotMuti();
             winAnim.flyCoin = Number(fruitCfg.flyCoin);
             winAnim.addGold = winAnim.muti * result.cost;
         }
@@ -147,7 +147,7 @@ export default class GameSlot{
         this._slot.play(SlotFruit.share);
         var anim:SlotResultAnim = new SlotResultAnim(SlotResultAniEnum.Share);
         var fruitCfg:any = CFG.getCfgDataById(ConfigConst.Fruit,result.slotArr[0]);
-        anim.muti =  Number(fruitCfg.winMuti)*Common.getFlowerMuti();;
+        anim.muti =  Number(fruitCfg.winMuti)*Common.getSlotMuti();;
         anim.addGold =  anim.muti * result.cost;
         this._scene.scheduleOnce(()=>{
             UI.showWinAnim(anim);

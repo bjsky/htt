@@ -54,4 +54,8 @@ export default class GameEvent {
     public static Fly_Res_End:string ="Fly_Res_End";
     //res
     public static RES_Change:string ="RES_Change";
+    //引导点击
+    public static Guide_Touch:string ="Guide_Touch";
+    //解锁地块
+    public static Unlock_Tree:string ="Unlock_Tree";
 }

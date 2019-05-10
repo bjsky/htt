@@ -55,12 +55,16 @@ export default class GameScene extends SceneBase {
     @property(cc.Label) bigwinTimes: cc.Label = null;
 
 
-    @property(cc.Label) flowerAdd: cc.Label = null;
+    @property(cc.Label) farmlandAdd: cc.Label = null;
     
 
     @property(cc.Button) btnToFarm: cc.Button = null;
 
     @property(cc.Node) sceneNode: cc.Node = null;
+
+
+    @property(cc.Node) bigwinTimeNode:cc.Node = null;
+    @property(cc.Node) slotMutiNode:cc.Node = null;
     // @property(cc.Node) sprTrans: cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
 
@@ -122,7 +126,9 @@ export default class GameScene extends SceneBase {
         this.onEnergyUIUpdate(null);
         this.updateCostView();
 
-        this.flowerAdd.string = "×"+ Common.getFlowerMuti();
+        this.farmlandAdd.string = Common.getSlotMuti().toString();
+        this.bigwinTimeNode.active = false;
+        this.slotMutiNode.active =true;
     }
     private onEnergyUIUpdate(e){
         Common.resInfo.updateEnergy();
@@ -250,6 +256,8 @@ export default class GameScene extends SceneBase {
         this._bigwinTiems = Number(CFG.getCfgByKey(ConfigConst.Constant,"key","bigWinRound")[0].value);
         this.bigwinTimes.string = this._bigwinTiems.toString();
         this.bigwinTimes.node.runAction(cc.sequence(cc.scaleTo(0.1,1.3),cc.scaleTo(0.15,1)));
+        this.bigwinTimeNode.active = true;
+        this.slotMutiNode.active =false;
     }
 
     private onBigwinTurn(e){
@@ -266,5 +274,7 @@ export default class GameScene extends SceneBase {
         this.lightLeft.opacity = 0;
         this.lightRight.stopAllActions();
         this.lightRight.opacity = 0;
+        this.bigwinTimeNode.active = false;
+        this.slotMutiNode.active =true;
     }
 }

@@ -101,16 +101,16 @@ export default class FarmController{
         if(isFree){
             costGold = 0;
         }
-        NET.send(MsgUpdateFarm.create(index,seedId,1,Common.getServerTime(),0, costGold),(msg:MsgUpdateFarm)=>{
-            if(msg && msg.resp){
-                Common.resInfo.updateInfo(msg.resp.resInfo);
-                var farmland = new FarmlandInfo();
-                farmland.initFromServer(msg.resp.farmland);
-                this._farmlandsDic[index] = farmland;
-                EVENT.emit(GameEvent.Plant_Tree,{index:index,seedId:seedId});
-            }
-        },this)
-        this.updateUnlockFarmland(seedId);
+        // NET.send(MsgUpdateFarm.create(index,seedId,1,Common.getServerTime(),0, costGold),(msg:MsgUpdateFarm)=>{
+        //     if(msg && msg.resp){
+        //         Common.resInfo.updateInfo(msg.resp.resInfo);
+        //         var farmland = new FarmlandInfo();
+        //         farmland.initFromServer(msg.resp.farmland);
+        //         this._farmlandsDic[index] = farmland;
+        //         EVENT.emit(GameEvent.Plant_Tree,{index:index,seedId:seedId});
+        //     }
+        // },this)
+        // this.updateUnlockFarmland(seedId);
     }
 
     private updateFarmland(index:number,farmland:FarmlandInfo){

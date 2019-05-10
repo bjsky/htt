@@ -43,6 +43,7 @@ export default class MsgPickFarm extends MessageBase{
         msg.param.index = index;
         msg.param.startTime = starttime;
         msg.param.addGold = addGold;
+        // msg.param.addFlower = addFlower;
         return msg;
     }
 

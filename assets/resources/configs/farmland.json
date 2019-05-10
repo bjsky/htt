@@ -1,0 +1,12 @@
+[
+    {"id":"1","mapId":"1","nextMap":"0","unlockFlower":"0","flower":"","unlockGold":"100","slotMuti":"1"},
+    {"id":"2","mapId":"1","nextMap":"0","unlockFlower":"1","flower":"2;","unlockGold":"200","slotMuti":"2"},
+    {"id":"3","mapId":"1","nextMap":"0","unlockFlower":"3","flower":"3;2","unlockGold":"500","slotMuti":"3"},
+    {"id":"4","mapId":"1","nextMap":"0","unlockFlower":"6","flower":"3;3;3","unlockGold":"1000","slotMuti":"4"},
+    {"id":"5","mapId":"1","nextMap":"0","unlockFlower":"10","flower":"4;4;3;3","unlockGold":"2000","slotMuti":"5"},
+    {"id":"6","mapId":"1","nextMap":"0","unlockFlower":"15","flower":"4;4;4;4;4","unlockGold":"5000","slotMuti":"6"},
+    {"id":"7","mapId":"1","nextMap":"0","unlockFlower":"21","flower":"5;5;5;4;4;4","unlockGold":"10000","slotMuti":"7"},
+    {"id":"8","mapId":"1","nextMap":"0","unlockFlower":"28","flower":"5;5;5;5;5;5;5","unlockGold":"20000","slotMuti":"8"},
+    {"id":"9","mapId":"1","nextMap":"0","unlockFlower":"36","flower":"6;6;6;6;5;5;5;5","unlockGold":"50000","slotMuti":"9"},
+    {"id":"10","mapId":"1","nextMap":"1","unlockFlower":"45","flower":"6;6;6;6;6;6;6;6;6","unlockGold":"100000","slotMuti":"0"}
+    ]

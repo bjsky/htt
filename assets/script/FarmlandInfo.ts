@@ -35,7 +35,7 @@ export default class FarmlandInfo{
 
         if(this.treeType>0){
             var cfg:any = CFG.getCfgDataById(ConfigConst.Flower,this.treeType);
-            this.flowerLevel = Number(cfg.flower);
+            this.flowerLevel = Number(cfg.flowerLevel);
         }
     }
     // public updateServer(stree:SFarmlandInfo){

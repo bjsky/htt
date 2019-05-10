@@ -15,6 +15,7 @@ export const ConfigConst = {
     Fruit:"configs/fruit",
     Plant:"configs/plant",
     Flower:"configs/flower",
+    Farmland:"configs/farmland"
 }
 export const ResConst = {
     AlertPanel:"prefabs/alertPanel",
@@ -25,7 +26,8 @@ export const ResConst = {
     SharePanel:"prefabs/sharePanel",
     FarmlandUI:"prefabs/farmland",
     RankPanel:"prefabs/rankPanel",
-    Farmland2:"prefabs/farmlandFlower"
+    Farmland2:"prefabs/farmlandFlower",
+    FlowerDesc:"prefabs/flowerDesc"
 }
 
 export const SceneCont ={

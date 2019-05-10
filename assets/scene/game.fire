@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.3426791277258567,
-      "y": 0.3426791277258567,
+      "x": 0.5644549028002056,
+      "y": 0.5644549028002056,
       "z": 1
     },
     "_quat": {
@@ -79,10 +79,10 @@
     "_level": 1,
     "_components": [
       {
-        "__id__": 117
+        "__id__": 114
       },
       {
-        "__id__": 118
+        "__id__": 115
       }
     ],
     "_prefab": null,
@@ -335,16 +335,16 @@
         "__id__": 87
       },
       {
-        "__id__": 104
+        "__id__": 101
       },
       {
-        "__id__": 106
+        "__id__": 103
       },
       {
-        "__id__": 108
+        "__id__": 105
       },
       {
-        "__id__": 110
+        "__id__": 107
       }
     ],
     "_active": true,
@@ -4403,9 +4403,6 @@
       },
       {
         "__id__": 99
-      },
-      {
-        "__id__": 101
       }
     ],
     "_active": true,
@@ -4465,7 +4462,7 @@
       "__id__": 94
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_level": 5,
     "_components": [
       {
@@ -4548,13 +4545,13 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "label",
+    "_name": "farmlandAdd",
     "_objFlags": 0,
     "_parent": {
       "__id__": 94
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_level": 5,
     "_components": [
       {
@@ -4661,8 +4658,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 158,
-      "height": 26
+      "width": 163,
+      "height": 20
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4671,8 +4668,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -12,
-      "y": -27,
+      "x": -10,
+      "y": -28,
       "z": 0
     },
     "_scale": {
@@ -4707,7 +4704,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "38cdee88-4c1a-484e-9f17-c8fd6ec98059"
+      "__uuid__": "a85a33dc-54ef-4097-861d-b2e166f35a79"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -4726,114 +4723,6 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "flower",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 94
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 5,
-    "_components": [
-      {
-        "__id__": 102
-      },
-      {
-        "__id__": 103
-      }
-    ],
-    "_prefab": null,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 238,
-      "b": 168,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 65.22,
-      "height": 40
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": -42,
-      "y": 13,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_quat": {
-      "__type__": "cc.Quat",
-      "x": 0,
-      "y": 0,
-      "z": 0,
-      "w": 1
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_zIndex": 0,
-    "groupIndex": 0,
-    "_id": "5eQ43uSaRKhp5kQVhtub3p"
-  },
-  {
-    "__type__": "cc.Label",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 101
-    },
-    "_enabled": true,
-    "_srcBlendFactor": 1,
-    "_dstBlendFactor": 771,
-    "_useOriginalSize": false,
-    "_string": "×1.2",
-    "_N$string": "×1.2",
-    "_fontSize": 30,
-    "_lineHeight": 40,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
-    "_id": "b6OSNsvdNOnqWrhIjFHS4f"
-  },
-  {
-    "__type__": "cc.LabelOutline",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 101
-    },
-    "_enabled": true,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 146,
-      "g": 82,
-      "b": 0,
-      "a": 255
-    },
-    "_width": 3,
-    "_id": "ebRyR/Fx1B2ZGfMP9z8vYM"
-  },
-  {
-    "__type__": "cc.Node",
     "_name": "icon_tili",
     "_objFlags": 0,
     "_parent": {
@@ -4844,7 +4733,7 @@
     "_level": 3,
     "_components": [
       {
-        "__id__": 105
+        "__id__": 102
       }
     ],
     "_prefab": null,
@@ -4898,7 +4787,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 104
+      "__id__": 101
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -4935,7 +4824,7 @@
     "_level": 3,
     "_components": [
       {
-        "__id__": 107
+        "__id__": 104
       }
     ],
     "_prefab": null,
@@ -4989,7 +4878,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 106
+      "__id__": 103
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -5024,7 +4913,7 @@
     "_level": 3,
     "_components": [
       {
-        "__id__": 109
+        "__id__": 106
       }
     ],
     "_prefab": null,
@@ -5078,7 +4967,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 108
+      "__id__": 105
     },
     "_enabled": true,
     "_srcBlendFactor": 1,
@@ -5108,10 +4997,10 @@
     },
     "_children": [
       {
-        "__id__": 111
+        "__id__": 108
       },
       {
-        "__id__": 115
+        "__id__": 112
       }
     ],
     "_active": true,
@@ -5168,20 +5057,20 @@
     "_name": "toFarm",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 110
+      "__id__": 107
     },
     "_children": [],
     "_active": true,
     "_level": 4,
     "_components": [
       {
-        "__id__": 112
+        "__id__": 109
       },
       {
-        "__id__": 113
+        "__id__": 110
       },
       {
-        "__id__": 114
+        "__id__": 111
       }
     ],
     "_prefab": null,
@@ -5235,7 +5124,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 111
+      "__id__": 108
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -5265,7 +5154,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 111
+      "__id__": 108
     },
     "_enabled": true,
     "duration": 0.1,
@@ -5324,7 +5213,7 @@
     "hoverSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 111
+      "__id__": 108
     },
     "_id": "ecsyWZwdVDu6T9FUT8DWSw"
   },
@@ -5333,7 +5222,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 111
+      "__id__": 108
     },
     "_enabled": true,
     "originalScale": 1,
@@ -5345,14 +5234,14 @@
     "_name": "lbl_nc",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 110
+      "__id__": 107
     },
     "_children": [],
     "_active": true,
     "_level": 4,
     "_components": [
       {
-        "__id__": 116
+        "__id__": 113
       }
     ],
     "_prefab": null,
@@ -5406,7 +5295,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 115
+      "__id__": 112
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -5475,16 +5364,16 @@
       "__id__": 14
     },
     "iconEnergy": {
-      "__id__": 104
+      "__id__": 101
     },
     "lblcostLife": {
       "__id__": 65
     },
     "lblTotalLife": {
-      "__id__": 107
+      "__id__": 104
     },
     "lblLifeDesc": {
-      "__id__": 109
+      "__id__": 106
     },
     "slotNode": {
       "__id__": 50
@@ -5498,14 +5387,20 @@
     "bigwinTimes": {
       "__id__": 92
     },
-    "flowerAdd": {
-      "__id__": 102
+    "farmlandAdd": {
+      "__id__": 98
     },
     "btnToFarm": {
-      "__id__": 113
+      "__id__": 110
     },
     "sceneNode": {
       "__id__": 7
+    },
+    "bigwinTimeNode": {
+      "__id__": 90
+    },
+    "slotMutiNode": {
+      "__id__": 94
     },
     "_id": "93Got7RA9MqJHfILhIoTWR"
   }

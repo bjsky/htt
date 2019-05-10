@@ -6,6 +6,7 @@ import { Common } from "../CommonData";
 import ResBounceEffect from "../component/ResBounceEffect";
 import { SOUND } from "../core/SoundManager";
 import { FlyResType } from "./AnimUi";
+import { Farm2 } from "../game/farm2/Farm2Controller";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,6 +48,7 @@ export default class MainUI extends UIBase {
         EVENT.on(GameEvent.Fly_Res_End,this.onFlyResEnd,this);
         EVENT.on(GameEvent.Show_Gold_Fly_End,this.onShowGoldfly,this);
         EVENT.on(GameEvent.Plant_Tree,this.onPlantTree,this);
+        EVENT.on(GameEvent.Unlock_Tree,this.onUnlockTree,this);
         EVENT.on(GameEvent.Up_Level_Tree,this.onUplevelTree,this);
 
         this.subContent.active = false;
@@ -58,6 +60,7 @@ export default class MainUI extends UIBase {
         EVENT.off(GameEvent.Fly_Res_End,this.onFlyResEnd,this);
         EVENT.off(GameEvent.Show_Gold_Fly_End,this.onShowGoldfly,this);
         EVENT.off(GameEvent.Plant_Tree,this.onPlantTree,this);
+        EVENT.off(GameEvent.Unlock_Tree,this.onUnlockTree,this);
         EVENT.off(GameEvent.Up_Level_Tree,this.onUplevelTree,this);
     }
 
@@ -76,6 +79,9 @@ export default class MainUI extends UIBase {
         this.goldEffect.setValue(Common.resInfo.gold);
     }
     private onPlantTree(e){
+        this.goldEffect.setValue(Common.resInfo.gold);
+    }
+    private onUnlockTree(e){
         this.goldEffect.setValue(Common.resInfo.gold);
     }
     private onUplevelTree(e){
@@ -109,6 +115,7 @@ export default class MainUI extends UIBase {
     public playGoldBounce(){
         this.goldBounceEffect.play();
     }
+
 
     // update (dt) {}
 }

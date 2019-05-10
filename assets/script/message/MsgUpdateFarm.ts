@@ -58,7 +58,7 @@ export default class MsgUpdateFarm extends MessageBase{
     public respFromLocal(){
         var resInfo:SResInfo = Common.resInfo.cloneServerInfo();
         resInfo.gold -= this.param.costGold;
-        resInfo.flower+= this.param.addFlower;
+        resInfo.flower += this.param.addFlower;
         var farmland:SFarmlandInfo = new SFarmlandInfo();
         farmland.index = this.param.index;
         farmland.treeType = this.param.treeType;

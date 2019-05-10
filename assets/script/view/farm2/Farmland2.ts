@@ -4,14 +4,13 @@ import { FarmSceneState } from "../../scene/FarmScene";
 import { EVENT } from "../../core/EventController";
 import GameEvent from "../../GameEvent";
 import { Farm2 } from "../../game/farm2/Farm2Controller";
-import { ConfigConst, ResConst } from "../../GlobalData";
+import { ConfigConst } from "../../GlobalData";
 import { CFG } from "../../core/ConfigManager";
 import { Common } from "../../CommonData";
-import { UI } from "../../core/UIManager";
-import { MessagePanelType } from "../MessagePanel";
 import LoadSprite from "../../component/LoadSprite";
 import StringUtil from "../../utils/StringUtil";
 import { ResType } from "../../message/MsgAddRes";
+import { UI } from "../../core/UIManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -44,8 +43,11 @@ export default class Farmland2 extends UIBase{
     @property(cc.Node) uplvNode: cc.Node = null;
 
     @property(cc.Sprite) growthBg: cc.Sprite = null;
-    @property(cc.Sprite) lockBg: cc.Sprite = null;
+    @property(cc.Sprite) plantBg: cc.Sprite = null;
+    @property(cc.Sprite) upLvBg: cc.Sprite = null;
     @property(cc.Sprite) unlockBg: cc.Sprite = null;
+    //unlock
+    @property(cc.Label) unlockCost:cc.Label = null;
     //lock
     @property(cc.RichText) lbLock: cc.RichText = null;
     //plant
@@ -53,6 +55,7 @@ export default class Farmland2 extends UIBase{
     // @property(LoadSprite) plantSpr: LoadSprite = null;
     @property(cc.Label) plantCost: cc.Label = null;
     @property(cc.Label) plantFlower: cc.Label = null;
+    @property(cc.Node) getFlowerIcon: cc.Node = null;
 
     //upLv
     @property(cc.Label) upLvName: cc.Label = null;
@@ -64,6 +67,7 @@ export default class Farmland2 extends UIBase{
     //growth
     @property(cc.ProgressBar) growthPro: cc.ProgressBar = null;
     @property(cc.Label) getGold: cc.Label = null;
+    @property(cc.Node) getGoldIcon: cc.Node = null;
     @property(LoadSprite) sprTree: LoadSprite = null;
 
     // LIFE-CYCLE CALLBACKS:
@@ -87,9 +91,10 @@ export default class Farmland2 extends UIBase{
         EVENT.on(GameEvent.Farm_State_Change,this.onFarmStateChange,this);
         EVENT.on(GameEvent.RES_Change,this.onResChange,this);
 
-        this.lockBg.node.on(cc.Node.EventType.TOUCH_START,this.onLockTouch,this);
-        this.growthBg.node.on(cc.Node.EventType.TOUCH_START,this.onGrowthTouch,this)
-        this.unlockBg.node.on(cc.Node.EventType.TOUCH_START,this.onUpLevelTouch,this)
+        this.plantBg.node.on(cc.Node.EventType.TOUCH_START,this.onPlantTouch,this);
+        this.growthBg.node.on(cc.Node.EventType.TOUCH_START,this.onGrowthTouch,this);
+        this.upLvBg.node.on(cc.Node.EventType.TOUCH_START,this.onUpLevelTouch,this);
+        this.unlockBg.node.on(cc.Node.EventType.TOUCH_START,this.onUnlockTouch,this);
         
         this._curState = FarmSceneState.Growth;
         this.updateView();
@@ -99,9 +104,10 @@ export default class Farmland2 extends UIBase{
         EVENT.off(GameEvent.Farm_State_Change,this.onFarmStateChange,this);
         EVENT.off(GameEvent.RES_Change,this.onResChange,this);
 
-        this.lockBg.node.off(cc.Node.EventType.TOUCH_START,this.onLockTouch,this);
-        this.growthBg.node.off(cc.Node.EventType.TOUCH_START,this.onGrowthTouch,this)
-        this.unlockBg.node.off(cc.Node.EventType.TOUCH_START,this.onUpLevelTouch,this)
+        this.plantBg.node.off(cc.Node.EventType.TOUCH_START,this.onPlantTouch,this);
+        this.growthBg.node.off(cc.Node.EventType.TOUCH_START,this.onGrowthTouch,this);
+        this.upLvBg.node.off(cc.Node.EventType.TOUCH_START,this.onUpLevelTouch,this);
+        this.unlockBg.node.off(cc.Node.EventType.TOUCH_START,this.onUnlockTouch,this);
     }
 
     private _curState:FarmSceneState = 0;
@@ -130,43 +136,29 @@ export default class Farmland2 extends UIBase{
                 }
             }
         }else if(type == ResType.Flower){
-            if(this._state == Farmland2State.Lock){
-                this.showLock();
-            }
         }
     }
 
     private updateView(){
-        var unlockIndex:number = Farm2.getUnlockFarmlandIndex();
+        var lockedIndex:number = Farm2.getFarmlandLockedIndex();
+        var isUnlock:boolean = lockedIndex>-1?this.index<lockedIndex:true;
         if(this._curState == FarmSceneState.Growth){
             if(this._farmland.treeType == 0){
-                if(unlockIndex>-1){
-                    if(this.index < unlockIndex){
-                        this._state = Farmland2State.UnLock;
+                if(isUnlock){
+                    this._state = Farmland2State.UnLock;
+                }else{
+                    if(this.index == lockedIndex){
+                        this._state = Farmland2State.Lock;
                     }else{
                         this._state = Farmland2State.Unplant;
                     }
-                }else{
-                    this._state = Farmland2State.UnLock;
                 }
             }else{
                 this._state = Farmland2State.Growth;
             }
         }else if(this._curState == FarmSceneState.Plant){
             if(this._farmland.treeType == 0){
-                if(unlockIndex>-1){
-                    if(this.index == unlockIndex){
-                        this._state = Farmland2State.Lock;
-                    }else if(this.index > unlockIndex){
-                        this._state = Farmland2State.Unplant;
-                    }else{
-                        this._state = Farmland2State.Plant;
-                        this._lockTreeId = 1;
-                    } 
-                }else{
-                    this._state = Farmland2State.Plant;
-                    this._lockTreeId = 1;
-                }
+                this._state = Farmland2State.Unplant;
             }else{
                 var cfg =CFG.getCfgDataById(ConfigConst.Flower,this._farmland.treeType);
                 if(this._farmland.level >= Number(cfg.maxLevel)){
@@ -209,6 +201,7 @@ export default class Farmland2 extends UIBase{
             }break;
             case Farmland2State.UnLock:{
                 this.unlockNode.active = true;
+                this.showUnlock();
             }break;
         }
     }
@@ -220,11 +213,20 @@ export default class Farmland2 extends UIBase{
         if(this._growthCfg){
             this.sprTree.load(this._growthCfg.icon);
             this.growthPro.progress = 0;
+            this.getGold.string = "";
         }
     }
     private showLock(){
-        var count:number = Farm2.getUnlockNeedFlower(this.index);
-        this.lbLock.string ="<color=#ffffff><color=#FFF600>"+Common.resInfo.flower+"</color>/"+count+"</c>";
+        var cfg:any = Farm2.getUnlockCfg(this.index);
+        this.lbLock.string ="<color=#ffffff> <color=#FFF600>"+Number(cfg.unlockFlower)+"</color> 解锁</c>";
+    }
+
+    private _unlockCost:number = 0;
+    private showUnlock(){
+
+        var cfg:any = Farm2.getUnlockCfg(this.index);
+        this._unlockCost = Number(cfg.unlockGold);
+        this.unlockCost.string =StringUtil.formatReadableNumber(this._unlockCost);
     }
 
     private _plantCost:number = 0;
@@ -297,19 +299,27 @@ export default class Farmland2 extends UIBase{
 
     }
 
-    private onGrowthTouch(e){
+    public onGrowthTouch(e){
         if(this._growthGold>0){
             Farm2.pickOnce(this.index);
         }
     }
 
-    private onLockTouch(e){
+    private onPlantTouch(e){
         if(Common.resInfo.gold<this._plantCost){
             // UI.showTip("金币不足，采摘花田或转盘抽奖");
             return;
         }
 
-        Farm2.unlockFarmland(this._lockTreeId,this.index,this._plantCost);
+        Farm2.plantFarmland(this._lockTreeId,this.index,this._plantCost);
+    }
+
+    private onUnlockTouch(e){
+        if(Common.resInfo.gold<this._unlockCost){
+            UI.showTip("金币不足，采摘花田或转盘抽奖");
+            return;
+        }
+        Farm2.unlockFarmland(1,this.index,this._unlockCost);
     }
 
     private onUpLevelTouch(e){
@@ -323,18 +333,19 @@ export default class Farmland2 extends UIBase{
         Farm2.upLevelFarmland(this.index,this._upCost);
     }
 
-
-    public updateLock(){
-        this._farmland = Farm2.getFarmlandAtIndex(this.index);
-        this.updateView();
+    public onGuideTouch(){
+        var plant:boolean = false;
+        if(this._state == Farmland2State.upLv){
+            this.onUpLevelTouch(null);
+        }else if(this._state == Farmland2State.Plant){
+            // this.onLockTouch(null);
+            plant = true;
+        }
+        return plant;
     }
 
-    public updateGrowth(){
-        this._farmland = Farm2.getFarmlandAtIndex(this.index);
-        this.updateView();
-    }
 
-    public updateLevel(){
+    public updateFarmland(){
         this._farmland = Farm2.getFarmlandAtIndex(this.index);
         this.updateView();
     }

@@ -28,4 +28,8 @@ export default class PathUtil {
             return "ui/xh";
         }
     }
+
+    public static getLockFlowerUrl():string{
+        return "ui/flower/lockFlower"
+    }
 }

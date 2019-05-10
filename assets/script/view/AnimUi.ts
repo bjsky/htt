@@ -299,16 +299,18 @@ export default class AnimUi extends UIBase {
         console.log(star.position);
         
         var moveTo = this.starNode.convertToNodeSpaceAR(toPos);
+        var move;
         if(res == FlyResType.Gold){
-            var moveCenter:cc.Vec2 = cc.v2(moveFrom.x+30,moveFrom.y-(moveTo.y - moveFrom.y)/8);
+            move = cc.moveTo(0.4,moveTo).easing(cc.easeIn(1.5));
+            star.scale = 0.6;
         }else{
             var moveCenter:cc.Vec2 = cc.v2(moveFrom.x+(moveTo.x - moveFrom.x)/2,moveFrom.y-(moveTo.y - moveFrom.y)/8);
+            move = cc.bezierTo(0.6,[moveFrom,moveCenter,moveTo]).easing(cc.easeIn(1.5))
+            star.scale = 0.7;
         }
-            // var moveCenter = cc.v2(fromPos.x+200,fromPos.y+100);
-        var move = cc.bezierTo(0.6,[moveFrom,moveCenter,moveTo]).easing(cc.easeIn(1.5))
         var seq = cc.sequence(
             cc.delayTime(this._starDelay*this._starCount),
-            move//c.moveTo(0.4,this.starNode.convertToNodeSpaceAR(toPos))
+            move
             ,cc.callFunc(()=>{
                 this._starCount--;
                 this._starPool.put(star);
