@@ -188,8 +188,8 @@ window.showBannerAd = function(adId){
 
 let shareCallbackFunc = function(){
   return {
-    title:"点一点，得金币，看谁最快当上水果大王！",
-    imageUrl:"https://s.1233k.com/resShare/share_2.jpg",
+    title:"划一划，得金币，养花专家就是你！",
+    imageUrl:"https://s.1233k.com/resShare/share_3.jpg",
     query:"",
   }
 }

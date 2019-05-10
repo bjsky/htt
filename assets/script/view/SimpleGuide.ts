@@ -3,6 +3,7 @@ import { Scene } from "../scene/SceneController";
 import FarmScene from "../scene/FarmScene";
 import { EVENT } from "../core/EventController";
 import GameEvent from "../GameEvent";
+import GameScene from "../scene/GameScene";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,18 +39,20 @@ export default class SimpleGuide extends cc.Component {
     public show(info:GuideInfo){
         this._info = info;
         if(this._info.guideType == 1){
-            this.showMessage(info.gudieMessage);
+            this.showMessage();
         }else if(this._info.guideType == 2){
-            this.showArrow(info.guideNodeName);
+            this.showArrow();
+        }else if(this._info.guideType == 3){
+            this.showMove();
         }
     }
 
-    private showMessage(msg:string){
+    private showMessage(){
         this.node.active = true;
         this.msgNode.active = true;
         this.arrowNode.active = false;
-        this.message.string = "<color=#942F00>"+msg+"</c>";
-        this.scheduleOnce(this.addListener.bind(this),0.5);
+        this.message.string = "<color=#942F00>"+this._info.gudieMessage+"</c>";
+        this.scheduleOnce(this.addListener.bind(this),1);
     }
 
     private addListener(){
@@ -59,11 +62,11 @@ export default class SimpleGuide extends cc.Component {
         this.node.off(cc.Node.EventType.TOUCH_START,this.onGuideTouch,this);
     }
 
-    private showArrow(nodeName:string){
+    private showArrow(){
         this.node.active = true;
         this.msgNode.active = false;
         this.arrowNode.active = true;
-        var node:cc.Node = this.getGuideNode(nodeName);
+        var node:cc.Node = this.getGuideNode();
         if(node!=null){
             this.addListener();
             var pos:cc.Vec2 = node.parent.convertToWorldSpaceAR(node.position)
@@ -79,17 +82,19 @@ export default class SimpleGuide extends cc.Component {
         }
     }
 
+    private showMove(){
+    }
+
     public hide(){
         this.node.active = false;
         this.removeListener();
     }
-    private getGuideNode(nodeName):cc.Node{
+    private getGuideNode():cc.Node{
         var node:cc.Node;
-        if(nodeName == "firstFarmland"||
-            nodeName == "toPlant"||
-            nodeName == "uplvFarmland"||
-            nodeName == "uplvFarmland2"){
-            node = (Scene.getCurScene() as FarmScene).getGuideNode(nodeName);
+        if(this._info.sceneName == "farm"){
+            node = (Scene.getCurScene() as FarmScene).getGuideNode(this._info.guideNodeName);
+        }else if(this._info.sceneName == "game"){
+            node = (Scene.getCurScene() as GameScene).getGuideNode(this._info.guideNodeName);
         }
         return node;
     }

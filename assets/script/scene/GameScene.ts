@@ -18,6 +18,7 @@ import SlotNode from "../game/SlotNode";
 import { ShareType } from "../view/SharePanel";
 import { ResType } from "../message/MsgAddRes";
 import SceneBase, { SceneEnum } from "./SceneBase";
+import { Guide, GuideInfo } from "../GuideController";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -96,6 +97,7 @@ export default class GameScene extends SceneBase {
         EVENT.on(GameEvent.BigWin_End,this.onBigwinEnd,this);
         EVENT.on(GameEvent.Scene_To_Farm,this.onGoFarm,this);
         EVENT.on(GameEvent.Get_Res_Finish,this.onGetRes,this);
+        EVENT.on(GameEvent.Guide_Touch,this.onGuideTouch,this);
         this.initScene();
     }
 
@@ -109,6 +111,7 @@ export default class GameScene extends SceneBase {
         EVENT.off(GameEvent.BigWin_End,this.onBigwinEnd,this);
         EVENT.off(GameEvent.Scene_To_Farm,this.onGoFarm,this);
         EVENT.off(GameEvent.Get_Res_Finish,this.onGetRes,this);
+        EVENT.off(GameEvent.Guide_Touch,this.onGuideTouch,this);
     }
 
     private _gameSlot:GameSlot;
@@ -129,6 +132,8 @@ export default class GameScene extends SceneBase {
         this.farmlandAdd.string = Common.getSlotMuti().toString();
         this.bigwinTimeNode.active = false;
         this.slotMutiNode.active =true;
+
+        Guide.startGuide();
     }
     private onEnergyUIUpdate(e){
         Common.resInfo.updateEnergy();
@@ -203,6 +208,9 @@ export default class GameScene extends SceneBase {
     private playEnd(){
         this._isSlotLocked = false;
         this.enableButtons(true);
+        if(Guide.isGuide){
+            Guide.nextGuide();
+        }
     }
 
     private enableButtons(bool:boolean){
@@ -276,5 +284,28 @@ export default class GameScene extends SceneBase {
         this.lightRight.opacity = 0;
         this.bigwinTimeNode.active = false;
         this.slotMutiNode.active =true;
+    }
+
+    public getGuideNode(nodeName:string):cc.Node{
+        var node:cc.Node = null;
+        if(nodeName == "startSlot"){
+            node = this.btnOn.node;
+        }else if(nodeName == "toFarm"){
+            node = this.btnToFarm.node;
+        }
+        return node;
+    }
+
+    public onGuideTouch(e){
+        var info:GuideInfo = e.info;
+        if(info.guideNodeName == "startSlot"){
+            this.onSlot(null);
+            Guide.hide();
+        }else if(info.guideNodeName == "toFarm"){
+
+            Guide.hide();
+            Guide.endGuide();
+            this.onGoFarm(null);
+        }
     }
 }

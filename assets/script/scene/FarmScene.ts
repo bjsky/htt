@@ -107,7 +107,7 @@ export default class FarmScene extends SceneBase{
     private onLoadingComplete(e){
         this.initScene();
         SOUND.playFarmBgSound();
-        Guide.startGuide(true);
+        Guide.startGuide();
         console.log(Common.newUser)
     }
     private initScene(){
@@ -300,16 +300,32 @@ export default class FarmScene extends SceneBase{
         var node:cc.Node = null;
         if(nodeName == "firstFarmland"  ||
             nodeName == "uplvFarmland"  ||
-            nodeName == "uplvFarmland2"){
+            nodeName == "uplvFarmland2" ||
+            nodeName == 'toPick'){
             node = this.getFarmland2WithIdx(0).node;
-        }else if(nodeName == "toPlant"){
+        }else if(nodeName == "toPlant"||
+            nodeName == "toGrowth"){
             node = this.btnPlant.node;
+        }else if(nodeName == "unlockFarmland"){
+            node = this.getFarmland2WithIdx(1).node;
+        }else if(nodeName == "toSlot"){
+            node = this.btnToSlot.node;
         }
         return node;
     }
+
     public onGuideTouch(e){
         var info:GuideInfo = e.info;
         if(info.guideNodeName == "firstFarmland"){
+            var farmland:Farmland2 = this.getFarmland2WithIdx(0);
+            if(farmland){
+                farmland.onUnlockTouch(null);
+                Guide.hide();
+                this.scheduleOnce(()=>{
+                    Guide.nextGuide();
+                },0.5)
+            }
+        }else if(info.guideNodeName == "toPick"){
             var farmland:Farmland2 = this.getFarmland2WithIdx(0);
             if(farmland){
                 farmland.onGrowthTouch(null);
@@ -318,22 +334,25 @@ export default class FarmScene extends SceneBase{
                     Guide.nextGuide();
                 },0.5)
             }
-        }else
-        if(info.guideNodeName == "toPlant"){
+        }else if(info.guideNodeName == "toPlant"){
             this.changeState(FarmSceneState.Plant);
+            Guide.hide();
+            Guide.nextGuide();
+        }else if(info.guideNodeName == "toGrowth"){
+            this.changeState(FarmSceneState.Growth);
             Guide.hide();
             Guide.nextGuide();
         }else if(info.guideNodeName == "uplvFarmland"){
             var farmland:Farmland2 = this.getFarmland2WithIdx(0);
             if(farmland){
-                farmland.onGuideTouch();
+                farmland.onGuideUpLevel();
                 Guide.hide();
                 Guide.nextGuide();
             }
         }else if(info.guideNodeName == "uplvFarmland2"){
             var farmland:Farmland2 = this.getFarmland2WithIdx(0);
             if(farmland){
-                var isPlant = farmland.onGuideTouch();
+                var isPlant = farmland.onGuideUpLevel();
                 if(isPlant){
                     Guide.hide();
                     this.scheduleOnce(()=>{
@@ -341,6 +360,17 @@ export default class FarmScene extends SceneBase{
                     },0.5)
                 }
             }
+        }else if(info.guideNodeName == "unlockFarmland"){
+            var farmland:Farmland2 = this.getFarmland2WithIdx(1);
+            if(farmland){
+                farmland.onUnlockTouch(null);
+                Guide.hide();
+                Guide.nextGuide();
+            }
+        }else if(info.guideNodeName == "toSlot"){
+            this.onGoSlot(null);
+            Guide.hide();
+            Guide.nextGuide();
         }
     }
     // update (dt) {}

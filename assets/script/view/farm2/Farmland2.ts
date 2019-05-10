@@ -314,7 +314,7 @@ export default class Farmland2 extends UIBase{
         Farm2.plantFarmland(this._lockTreeId,this.index,this._plantCost);
     }
 
-    private onUnlockTouch(e){
+    public onUnlockTouch(e){
         if(Common.resInfo.gold<this._unlockCost){
             UI.showTip("金币不足，采摘花田或转盘抽奖");
             return;
@@ -333,12 +333,12 @@ export default class Farmland2 extends UIBase{
         Farm2.upLevelFarmland(this.index,this._upCost);
     }
 
-    public onGuideTouch(){
+    public onGuideUpLevel(){
         var plant:boolean = false;
         if(this._state == Farmland2State.upLv){
             this.onUpLevelTouch(null);
         }else if(this._state == Farmland2State.Plant){
-            // this.onLockTouch(null);
+            this.onPlantTouch(null);
             plant = true;
         }
         return plant;
