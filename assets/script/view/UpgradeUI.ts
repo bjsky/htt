@@ -29,6 +29,11 @@ export default class UpgradeUI extends PopUpBase{
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
+    private unlockId:number = -1;
+    public setData(data:any){
+        super.setData(data);
+        this.unlockId = data.unlockId;
+    }
 
     onEnable(){
         super.onEnable();

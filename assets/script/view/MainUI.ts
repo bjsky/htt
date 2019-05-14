@@ -76,6 +76,7 @@ export default class MainUI extends UIBase {
     }
 
     private onShowGoldfly(e){
+
         this.goldEffect.setValue(Common.resInfo.gold);
     }
     private onPlantTree(e){
@@ -95,11 +96,13 @@ export default class MainUI extends UIBase {
     public onFlyResEnd(e){
         var restype:FlyResType = e.type;
         if(restype == FlyResType.Gold){
+            SOUND.playFGoldSound();
             this.playGoldBounce();
             this.goldEffect.setValue(Common.resInfo.gold);
         }else if(restype == FlyResType.Flower){
             this.playFlowerBounce();
             this.lblFlower.string = Common.resInfo.flower.toString();
+            Farm2.showUnlockChange();
         }
     }
 

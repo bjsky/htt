@@ -143,6 +143,15 @@ export default class SoundManager{
     public playPickSound(){
         this.playEffectSound(SoundConst.Pick_sound,true);
     }
+    public playUplvSound(){
+        this.playEffectSound(SoundConst.Uplv_sound);
+    }
+    public playFGoldSound(){
+        this.playEffectSound(SoundConst.F_gold_sound);
+    }
+    public playFPickSound(){
+        this.playEffectSound(SoundConst.F_pick_sound);
+    }
 }
 
 export class SoundConst {
@@ -160,6 +169,9 @@ export class SoundConst {
     public static Star_Bounce_sound:string ="sounds/star";
     public static Water_sound:string ="sounds/water";
     public static Pick_sound:string ="sounds/pick";
+    public static Uplv_sound:string ="sounds/uplv";
+    public static F_pick_sound:string ="sounds/flowerPick";
+    public static F_gold_sound:string ="sounds/flowerGold";
 }
 
 export var SOUND = SoundManager.getInstance();

@@ -89,6 +89,29 @@ export default class Farm2Controller {
         }
     }
 
+    public unlockChangeObj:any = null;
+    public checkUnlockChange(){
+        var lockCfg:any = CFG.getCfgGroup(ConfigConst.Farmland);
+        var unlockId:number = -1;
+        for(var key in lockCfg){
+            var needFlower:number = Number(lockCfg[key].unlockFlower);
+            if(Common.resInfo.flower == needFlower){
+                unlockId = Number(key);
+                break;
+            }
+        }
+        if(unlockId>-1){
+            this.unlockChangeObj = {id:unlockId,index:Number(lockCfg[unlockId].index)};
+        }
+
+    }
+    public showUnlockChange(){
+        if(this.unlockChangeObj!=null){
+            EVENT.emit(GameEvent.Unlock_Change,this.unlockChangeObj);
+            this.unlockChangeObj = null;
+        }
+    }
+
     public plantFarmland(treeType:number,index:number,cost:number){
         var info:FarmlandInfo = this.stageFarmland(index);
         var addFlower:number = Number(CFG.getCfgDataById(ConfigConst.Flower,treeType).addFlower);
@@ -97,13 +120,16 @@ export default class Farm2Controller {
             if(msg && msg.resp){
                 Common.resInfo.updateInfo(msg.resp.resInfo);
                 this.updateFarmland(msg.resp.farmland);
+                this.checkUnlockChange();
                 EVENT.emit(GameEvent.Plant_Tree,{index:index,seedId:msg.resp.farmland.treeType});
             }
         },this);
     }
 
     public unlockFarmland(treeType:number,index:number,cost:number){
-        NET.send(MsgUpdateFarm.create(index,treeType,1,Common.getServerTime(),0,cost,0),(msg:MsgPlant)=>{
+
+        var addFlower:number = Number(CFG.getCfgDataById(ConfigConst.Flower,treeType).addFlower);
+        NET.send(MsgUpdateFarm.create(index,treeType,1,Common.getServerTime(),0,cost,addFlower),(msg:MsgPlant)=>{
             if(msg && msg.resp){
                 Common.resInfo.updateInfo(msg.resp.resInfo);
                 this.updateFarmland(msg.resp.farmland);

@@ -11,6 +11,7 @@ import LoadSprite from "../../component/LoadSprite";
 import StringUtil from "../../utils/StringUtil";
 import { ResType } from "../../message/MsgAddRes";
 import { UI } from "../../core/UIManager";
+import { SOUND } from "../../core/SoundManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -48,6 +49,7 @@ export default class Farmland2 extends UIBase{
     @property(cc.Sprite) unlockBg: cc.Sprite = null;
     //unlock
     @property(cc.Label) unlockCost:cc.Label = null;
+    @property(cc.Node) goldNode:cc.Node = null;
     //lock
     @property(cc.RichText) lbLock: cc.RichText = null;
     //plant
@@ -63,6 +65,7 @@ export default class Farmland2 extends UIBase{
     @property(cc.ProgressBar) levelPro: cc.ProgressBar = null;
     @property(cc.Label) upLvCost: cc.Label = null;
     @property(cc.Label) curFlower: cc.Label = null;
+    @property(cc.Label) addGold: cc.Label = null;
 
     //growth
     @property(cc.ProgressBar) growthPro: cc.ProgressBar = null;
@@ -98,6 +101,8 @@ export default class Farmland2 extends UIBase{
         
         this._curState = FarmSceneState.Growth;
         this.updateView();
+
+        this.addGold.node.active = false;
     }
 
     onDisable(){
@@ -147,18 +152,24 @@ export default class Farmland2 extends UIBase{
                 if(isUnlock){
                     this._state = Farmland2State.UnLock;
                 }else{
-                    if(this.index == lockedIndex){
-                        this._state = Farmland2State.Lock;
-                    }else{
+                    // if(this.index == lockedIndex){
+                    //     this._state = Farmland2State.Lock;
+                    // }else{
                         this._state = Farmland2State.Unplant;
-                    }
+                    // }
                 }
             }else{
                 this._state = Farmland2State.Growth;
             }
         }else if(this._curState == FarmSceneState.Plant){
             if(this._farmland.treeType == 0){
-                this._state = Farmland2State.Unplant;
+                if(isUnlock){
+                    this._state = Farmland2State.UnLock;
+                }else if(this.index == lockedIndex){
+                    this._state = Farmland2State.Lock;
+                }else{
+                    this._state = Farmland2State.Unplant;
+                }
             }else{
                 var cfg =CFG.getCfgDataById(ConfigConst.Flower,this._farmland.treeType);
                 if(this._farmland.level >= Number(cfg.maxLevel)){
@@ -218,12 +229,16 @@ export default class Farmland2 extends UIBase{
     }
     private showLock(){
         var cfg:any = Farm2.getUnlockCfg(this.index);
-        this.lbLock.string ="<color=#ffffff> <color=#FFF600>"+Number(cfg.unlockFlower)+"</color> 解锁</c>";
+        this.lbLock.string ="<color=#ffffff> <color=#FFF600>"+Number(cfg.unlockFlower)+"</color></c>";
     }
 
     private _unlockCost:number = 0;
     private showUnlock(){
-
+        if(this._curState == FarmSceneState.Plant){
+            this.goldNode.active = false;
+        }else{
+            this.goldNode.active = true;
+        }
         var cfg:any = Farm2.getUnlockCfg(this.index);
         this._unlockCost = Number(cfg.unlockGold);
         this.unlockCost.string =StringUtil.formatReadableNumber(this._unlockCost);
@@ -301,6 +316,9 @@ export default class Farmland2 extends UIBase{
 
     public onGrowthTouch(e){
         if(this._growthGold>0){
+
+            this.showPickAnim();
+            SOUND.playPickSound();
             Farm2.pickOnce(this.index);
         }
     }
@@ -311,14 +329,26 @@ export default class Farmland2 extends UIBase{
             return;
         }
 
+        SOUND.playUplvSound();
         Farm2.plantFarmland(this._lockTreeId,this.index,this._plantCost);
     }
 
+    private showPickAnim(){
+        var seq = cc.sequence(cc.scaleTo(0.08,1.2),cc.scaleTo(0.12,1));
+        this.sprTree.node.scale = 1;
+        this.sprTree.node.stopAllActions();
+        this.sprTree.node.runAction(seq);
+    }
+
     public onUnlockTouch(e){
+        if(this._curState == FarmSceneState.Plant){
+            return;
+        }
         if(Common.resInfo.gold<this._unlockCost){
             UI.showTip("金币不足，采摘花田或转盘抽奖");
             return;
         }
+        SOUND.playPlantSound();
         Farm2.unlockFarmland(1,this.index,this._unlockCost);
     }
 
@@ -330,7 +360,28 @@ export default class Farmland2 extends UIBase{
             return;
         }
 
+        SOUND.playUplvSound();
+        this.showGoldTextFly();
         Farm2.upLevelFarmland(this.index,this._upCost);
+    }
+
+    private showGoldTextFly(){
+        var cfg:any = CFG.getCfgDataById(ConfigConst.Flower,this._farmland.treeType);
+        if(cfg){
+            this.addGold.string = "+"+cfg.goldUp;
+            var rdPos:cc.Vec2 = cc.v2(Math.floor(Math.random()*30)-15,Math.floor(Math.random()*40)-20);
+            this.addGold.node.setPosition(rdPos.add(cc.v2(0,140)));
+            this.addGold.node.active = true;
+            this.addGold.node.opacity = 255;
+            this.addGold.node.stopAllActions();
+            var seq = cc.sequence(cc.spawn(
+                cc.moveBy(0.4,cc.v2(0,30)),
+                cc.fadeOut(0.4)
+                ),cc.callFunc(()=>{
+                this.addGold.node.active = false;
+            }))
+            this.addGold.node.runAction(seq);
+        }
     }
 
     public onGuideUpLevel(){

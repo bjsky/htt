@@ -10,6 +10,8 @@ export class CSPickFarm{
     public index:number = 0;
     //开始时间更新
     public startTime:number = 0;
+    //积累的金币
+    public stageGold:number = 0;
     //增加的金币
     public addGold:number = 0;
 }
@@ -42,6 +44,7 @@ export default class MsgPickFarm extends MessageBase{
         msg.param = new CSPickFarm();
         msg.param.index = index;
         msg.param.startTime = starttime;
+        msg.param.stageGold = 0;
         msg.param.addGold = addGold;
         // msg.param.addFlower = addFlower;
         return msg;
@@ -54,7 +57,7 @@ export default class MsgPickFarm extends MessageBase{
         // resInfo.flower += this.param.addFlower;
         var farmland:SFarmlandInfo = Farm2.getFarmlandAtIndex(this.param.index).cloneServerInfo();
         farmland.growthStartTime = this.param.startTime;
-        farmland.stageGold =0;
+        farmland.stageGold =this.param.stageGold;
         // var json:any = userInfo;
         var json:any ={
             resInfo:resInfo,

@@ -58,4 +58,6 @@ export default class GameEvent {
     public static Guide_Touch:string ="Guide_Touch";
     //解锁地块
     public static Unlock_Tree:string ="Unlock_Tree";
+    //解锁地块改变
+    public static Unlock_Change:string ="Unlock_Change";
 }

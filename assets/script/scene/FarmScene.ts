@@ -1,5 +1,5 @@
 import ButtonEffect from "../component/ButtonEffect";
-import { SceneCont, ResConst, Global, ServerType } from "../GlobalData";
+import { SceneCont, ResConst, Global, ServerType, ConfigConst } from "../GlobalData";
 import { UI } from "../core/UIManager";
 import { EVENT } from "../core/EventController";
 import GameEvent from "../GameEvent";
@@ -15,6 +15,7 @@ import UIBase from "../component/UIBase";
 import { Farm2 } from "../game/farm2/Farm2Controller";
 import Farmland2 from "../view/farm2/Farmland2";
 import { Guide, GuideInfo } from "../GuideController";
+import { CFG } from "../core/ConfigManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -89,6 +90,7 @@ export default class FarmScene extends SceneBase{
         EVENT.on(GameEvent.Up_Level_Tree,this.onUpLevelTree,this);
         EVENT.on(GameEvent.Scene_To_Slot,this.onGoSlot,this);
         EVENT.on(GameEvent.Guide_Touch,this.onGuideTouch,this);
+        EVENT.on(GameEvent.Unlock_Change,this.unlockChange,this);
     }
 
 
@@ -100,6 +102,7 @@ export default class FarmScene extends SceneBase{
         EVENT.off(GameEvent.Up_Level_Tree,this.onUpLevelTree,this);
         EVENT.off(GameEvent.Scene_To_Slot,this.onGoSlot,this);
         EVENT.off(GameEvent.Guide_Touch,this.onGuideTouch,this);
+        EVENT.off(GameEvent.Unlock_Change,this.unlockChange,this);
 
         this.clearScene();
     }
@@ -271,7 +274,28 @@ export default class FarmScene extends SceneBase{
         var farmland2:Farmland2 = this.getFarmland2WithIdx(index);
         if(farmland2){
             farmland2.updateFarmland();
+            var anim:SlotResultAnim = new SlotResultAnim(SlotResultAniEnum.PlantTreefly);
+            anim.starTo = UI.main.flowerIcon.parent.convertToWorldSpaceAR(UI.main.flowerIcon.position);
+            anim.starFrom = farmland2.node.parent.convertToWorldSpaceAR(farmland2.node.position);
+            UI.showWinAnim(anim);
         }
+    }
+
+    private unlockChange(e){
+        var unlockId:number = e.id;
+        var unlockIndex:number = e.index;
+        var farmland2:Farmland2 = this.getFarmland2WithIdx(unlockIndex);
+        if(farmland2){
+            farmland2.updateFarmland();
+        }
+        if(unlockIndex<=8){ //解锁地块
+            var farmland2:Farmland2 = this.getFarmland2WithIdx(unlockIndex+1);
+            if(farmland2){
+                farmland2.updateFarmland();
+            }
+        }
+        
+        // UI.createPopUp(ResConst.UpgradeUI,{unlockId:unlockId});
     }
 
     private onPickTree(e){
