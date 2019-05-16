@@ -88,6 +88,21 @@ export default class Farm2Controller {
             return null;
         }
     }
+    public getIndexCanUp(index:number){
+        var minTreeType:number = NaN;
+        for(var i:number=0 ;i<this.Farmland_Count;i++){
+            var farmland:FarmlandInfo = this.getFarmlandAtIndex(i);
+            if(farmland.treeType>0){
+                if(isNaN(minTreeType)){
+                    minTreeType = farmland.treeType;
+                }else{
+                    minTreeType = Math.min(minTreeType,farmland.treeType);
+                }
+            }
+        }
+        var cur:FarmlandInfo = this.getFarmlandAtIndex(index);
+        return isNaN(minTreeType)?true:(cur.treeType<=minTreeType+1);
+    }
 
     public unlockChangeObj:any = null;
     public checkUnlockChange(){
@@ -182,7 +197,6 @@ export default class Farm2Controller {
             },this)
         }
     }
-
     public upLevelFarmland(index:number,cost:number){
         var farmland:FarmlandInfo = this.stageFarmland(index);
         if(farmland){

@@ -52,7 +52,7 @@ export default class SimpleGuide extends cc.Component {
         this.msgNode.active = true;
         this.arrowNode.active = false;
         this.message.string = "<color=#942F00>"+this._info.gudieMessage+"</c>";
-        this.scheduleOnce(this.addListener.bind(this),1);
+        this.scheduleOnce(this.addListener.bind(this),0.5);
     }
 
     private addListener(){

@@ -42,24 +42,32 @@ export default class UpgradeUI extends PopUpBase{
     }
 
     private initView(){
-        var level:number = Common.userInfo.level;
-        var levelCfg:any = CFG.getCfgDataById(ConfigConst.Level,level);
-        if(levelCfg){
-            this.lblLv.string = level.toString();
+        // var level:number = Common.userInfo.level;
+        // var levelCfg:any = CFG.getCfgDataById(ConfigConst.Level,level);
+        // if(levelCfg){
+        //     this.lblLv.string = level.toString();
             
-            var unlcokStr:string ="";
-            if(Number(levelCfg.unlcokTitle)==1){
-                unlcokStr = "获得职位：<color = #00ff00><b>"+levelCfg.title+"</b></c>";
-            }
-            var unlockPlant:string ="";
-            var plantUnlockCfg:any[] = CFG.getCfgByKey(ConfigConst.Plant,"unlocklv",level);
-            if(plantUnlockCfg.length>0){
-                unlockPlant = "解锁植物：<color = #00ff00><b>"+plantUnlockCfg[0].name+"</b></c>";
-            }
-            if(unlockPlant!=""){
-                unlcokStr = unlcokStr +"<br />"+ unlockPlant;
-            }
-            this.lblUnlock.string = "<color=#00FFF6>"+unlcokStr+"</c>";
+        //     var unlcokStr:string ="";
+        //     if(Number(levelCfg.unlcokTitle)==1){
+        //         unlcokStr = "获得职位：<color = #00ff00><b>"+levelCfg.title+"</b></c>";
+        //     }
+        //     var unlockPlant:string ="";
+        //     var plantUnlockCfg:any[] = CFG.getCfgByKey(ConfigConst.Plant,"unlocklv",level);
+        //     if(plantUnlockCfg.length>0){
+        //         unlockPlant = "解锁植物：<color = #00ff00><b>"+plantUnlockCfg[0].name+"</b></c>";
+        //     }
+        //     if(unlockPlant!=""){
+        //         unlcokStr = unlcokStr +"<br />"+ unlockPlant;
+        //     }
+        //     this.lblUnlock.string = "<color=#00FFF6>"+unlcokStr+"</c>";
+        // }
+        var farmlandcfg:any = CFG.getCfgDataById(ConfigConst.Farmland,this.unlockId);
+        if(farmlandcfg){
+            var unlockIndex = Number(farmlandcfg.index)+1;
+            var goldmuti:number = Number(farmlandcfg.slotMuti);
+            var str = "解锁：<color = #00ff00>第<b>"+unlockIndex+"块花田</b></c>";
+            str += "<br />转盘金币加倍：<color = #00ff00><b>"+goldmuti+"</b>倍</c>";
+            this.lblUnlock.string = "<color=#00FFF6>"+str+"</c>";
         }
     }
     onCloseComplete(){

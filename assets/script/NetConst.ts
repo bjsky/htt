@@ -32,8 +32,8 @@ export default class NetConst{
     public static AddRes:number = 22008;
 
     //采摘农田
-    public static PickFarm:number = 100001;
+    public static PickFarm:number = 22010;
     //升级农田
-    public static UpdateFarm:number = 100001;
+    public static UpdateFarm:number = 22009;
 
 }

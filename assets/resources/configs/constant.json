@@ -5,18 +5,18 @@
     {"id":"4","key":"bumperWin","name":"丰收中奖率","value":"0.5"},
     {"id":"5","key":"bumperTrigger","name":"丰收触发率","value":"0.05"},
     {"id":"6","key":"bumperRound","name":"丰收轮次","value":"10"},
-    {"id":"7","key":"bigWinRound","name":"大奖轮次","value":"7"},
+    {"id":"7","key":"bigWinRound","name":"大奖轮次","value":"5"},
     {"id":"8","key":"bigWinFruit","name":"大奖水果","value":"4;5;6;7"},
     {"id":"9","key":"bigWinReday","name":"大奖准备次数","value":"3"},
     {"id":"10","key":"slotFruits","name":"轮盘水果","value":"1;2;3;4;5;6;7;8;9|1;3;5;7;9;2;4;6;8|1;4;7;2;5;8;3;6;9"},
-    {"id":"11","key":"firstEnergy","name":"初始精力","value":"20"},
+    {"id":"11","key":"firstEnergy","name":"初始精力","value":"12"},
     {"id":"12","key":"firstGold","name":"初试金币","value":"2000"},
-    {"id":"13","key":"shareEnergy","name":"分享获得精力","value":"20"},
+    {"id":"13","key":"shareEnergy","name":"分享获得精力","value":"10"},
     {"id":"14","key":"farmlandlock","name":"地格解锁条件","value":"0;0|1;2|2;4|3;6|4;12|5;18|6;24|7;36|8;40"},
     {"id":"15","key":"firstWater","name":"初始水滴","value":"100"},
     {"id":"16","key":"shareWater","name":"分享获得水滴","value":"100"},
     {"id":"17","key":"flowerMaxTime","name":"花积累最长时间","value":"300"},
     {"id":"18","key":"flowerSlotUp","name":"鲜花金币加成","value":"0.1"},
     {"id":"19","key":"mapNames","name":"场景名","value":"1;乡村花园|2;山地花园|3;林地花园|4;热带花园|5;海滨花园"},
-    {"id":"20","key":"goldStageCount","name":"金币积累次数","value":"20"}
+    {"id":"20","key":"goldStageCount","name":"金币积累次数","value":"50"}
     ]

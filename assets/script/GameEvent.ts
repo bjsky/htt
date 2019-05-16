@@ -37,6 +37,7 @@ export default class GameEvent {
     //场景切换
     public static Scene_To_Slot:string ="Scene_To_Slot";
     public static Scene_To_Farm:string ="Scene_To_Farm";
+    public static FarmScene_To_Growth:string ="FarmScene_To_Growth";
     //免费种植改变
     public static Plant_Free_Change:string="Plant_Free_Change";
     //更新解锁

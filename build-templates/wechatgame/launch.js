@@ -243,7 +243,7 @@ let appOnLaunch = function()
   // // //测试服务器地址
   // window.login_server_url = "wss://www.xh52.top:8580/websocket";//服务器域名地址
   // 正式服务器地址
-  window.login_server_url = "wss://wz.1233k.com:8580/websocket";//服务器域名地址
+  window.login_server_url = "wss://wz.1233k.com:8680/websocket";//服务器域名地址
 
   var opt = wx.getLaunchOptionsSync();
   

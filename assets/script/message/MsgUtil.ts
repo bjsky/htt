@@ -10,6 +10,8 @@ import MsgShare from "./MsgShare";
 import MsgUpdateUnlock from "./MsgUpdateUnlock";
 import MsgWaterTree from "./MsgWaterTree";
 import MsgAddRes from "./MsgAddRes";
+import MsgPickFarm from "./MsgPickFarm";
+import MsgUpdateFarm from "./MsgUpdateFarm";
 
 /**
  * 太特么坑了，父类中还不能导入子类
@@ -50,7 +52,12 @@ export default class MsgUtil{
             case NetConst.AddRes:
             message = new MsgAddRes();
             break;
-
+            case NetConst.PickFarm:
+            message = new MsgPickFarm();
+            break;
+            case NetConst.UpdateFarm:
+            message = new MsgUpdateFarm();
+            break;
             default:
             message = null;
             break;

@@ -47,6 +47,7 @@ export default class FarmScene extends SceneBase{
 
 
     @property(cc.Node) sceneNode: cc.Node = null;
+
     // @property(cc.Node) sprTrans: cc.Node = null;
 
     // @property(DList) seedList: DList = null;
@@ -54,6 +55,9 @@ export default class FarmScene extends SceneBase{
     @property(cc.Button) btnRank: cc.Button = null;
     @property(cc.Button) btnPlant: cc.Button = null;
     @property(cc.Button) btnGrowth: cc.Button = null;
+
+    @property(cc.Node) nodeTipGrowth: cc.Node = null;
+    @property(cc.Node) nodeTipPlant: cc.Node = null;
 
     // @property(cc.Label) lblWater: cc.Label = null;
     // @property(cc.Node) iconWater: cc.Node = null;
@@ -91,6 +95,7 @@ export default class FarmScene extends SceneBase{
         EVENT.on(GameEvent.Scene_To_Slot,this.onGoSlot,this);
         EVENT.on(GameEvent.Guide_Touch,this.onGuideTouch,this);
         EVENT.on(GameEvent.Unlock_Change,this.unlockChange,this);
+        EVENT.on(GameEvent.FarmScene_To_Growth,this.farmScenetoGrowth,this);
     }
 
 
@@ -103,6 +108,7 @@ export default class FarmScene extends SceneBase{
         EVENT.off(GameEvent.Scene_To_Slot,this.onGoSlot,this);
         EVENT.off(GameEvent.Guide_Touch,this.onGuideTouch,this);
         EVENT.off(GameEvent.Unlock_Change,this.unlockChange,this);
+        EVENT.off(GameEvent.FarmScene_To_Growth,this.farmScenetoGrowth,this);
 
         this.clearScene();
     }
@@ -123,6 +129,7 @@ export default class FarmScene extends SceneBase{
         this.changeState(FarmSceneState.Growth);
         this.initFarmland();
         this.nextSceneFlower.string = "<color=#7A4414><color=#f04a3d>"+Farm2.getNextSceneFlower()+"</color> 解锁</c>";
+        this.addMoveEvent();
     }
     private clearScene(){
 
@@ -132,6 +139,10 @@ export default class FarmScene extends SceneBase{
         this.btnPlant.node.off(ButtonEffect.CLICK_END,this.toPlantState,this);
         this.btnGrowth.node.off(ButtonEffect.CLICK_END,this.toGrowthState,this);
         this._farmlandNodeDic = {};
+        this.removeMoveEvent();
+    }
+    private onLbTouch(e){
+        console.log("testlb");
     }
     private onRankClick(e){
         
@@ -182,6 +193,9 @@ export default class FarmScene extends SceneBase{
     private toPlantState(e){
         this.changeState(FarmSceneState.Plant);
     }
+    private farmScenetoGrowth(e){
+        this.changeState(FarmSceneState.Growth);
+    }
 
     private changeState(state:FarmSceneState){
         if(this._curState == state)
@@ -199,6 +213,9 @@ export default class FarmScene extends SceneBase{
                 this.btnPlant.node.active = false;
             }break;
         }
+
+        this.nodeTipGrowth.active = (this._curState == FarmSceneState.Growth);
+        this.nodeTipPlant.active = (this._curState == FarmSceneState.Plant);
 
         EVENT.emit(GameEvent.Farm_State_Change,{state:this._curState});
     }
@@ -294,8 +311,11 @@ export default class FarmScene extends SceneBase{
                 farmland2.updateFarmland();
             }
         }
+        if(!Guide.isGuide){
+            UI.createPopUp(ResConst.UpgradeUI,{unlockId:unlockId});
+            // UI.createPopUp(ResConst.MessgaePanel,{type:MessagePanelType.toGrowth})
+        }
         
-        // UI.createPopUp(ResConst.UpgradeUI,{unlockId:unlockId});
     }
 
     private onPickTree(e){
@@ -318,6 +338,19 @@ export default class FarmScene extends SceneBase{
         if(farmland2){
             farmland2.updateFarmland();
         }
+    }
+
+    private addMoveEvent(){
+        this.sceneNode.on(cc.Node.EventType.TOUCH_START,this.onSceneTouchStart,this);
+    }
+
+    private removeMoveEvent(){
+        this.sceneNode.off(cc.Node.EventType.TOUCH_START,this.onSceneTouchStart,this);
+
+    }
+
+    private onSceneTouchStart(e){
+        console.log("_____touch");
     }
 
     public getGuideNode(nodeName:string):cc.Node{

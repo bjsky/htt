@@ -22,6 +22,7 @@ export enum MessagePanelType{
     plantFree, //免费种植
     pickImmediatly, //立即收获
     userInfo,       //用户授权
+    toGrowth,   //去种植
 }
 
 
@@ -33,11 +34,13 @@ export default class MessagePanel extends PopUpBase {
     @property(cc.Button) btnPlantFree: cc.Button = null;
     @property(cc.Button) btnPickImme: cc.Button = null;
     @property(cc.Button) btnUserInfo: cc.Button = null;
+    @property(cc.Button) btntoGrowth: cc.Button = null;
     
     @property(cc.Node) toSlotNode: cc.Node = null;
     @property(cc.Node) plantFreeNode: cc.Node = null;
     @property(cc.Node) pickImmeNode: cc.Node = null;
     @property(cc.Node) shouquanNode: cc.Node = null;
+    @property(cc.Node) toGrowthNode: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -55,6 +58,7 @@ export default class MessagePanel extends PopUpBase {
         this.btnToSlot.node.on(ButtonEffect.CLICK_END,this.toSureTouch,this);
         this.btnPlantFree.node.on(ButtonEffect.CLICK_END,this.toSureTouch,this);
         this.btnPickImme.node.on(ButtonEffect.CLICK_END,this.toSureTouch,this);
+        this.btntoGrowth.node.on(ButtonEffect.CLICK_END,this.toSureTouch,this);
         this._sure = false;
     }
     onDisable(){
@@ -62,6 +66,7 @@ export default class MessagePanel extends PopUpBase {
         this.btnToSlot.node.off(ButtonEffect.CLICK_END,this.toSureTouch,this);
         this.btnPlantFree.node.off(ButtonEffect.CLICK_END,this.toSureTouch,this);
         this.btnPickImme.node.off(ButtonEffect.CLICK_END,this.toSureTouch,this);
+        this.btntoGrowth.node.off(ButtonEffect.CLICK_END,this.toSureTouch,this);
     }
     protected onShowComplete(){
         this.closeBtn.node.active = true;
@@ -84,6 +89,9 @@ export default class MessagePanel extends PopUpBase {
             this.shouquanNode.active = true;
             this.content.string = "<color=#ffffff>查看排行榜需要您的\n<color= #f6ff00>授权用户信息</c></c>";
             this.closeBtn.node.active = false;
+        }else if(this._type == MessagePanelType.toGrowth){
+            this.toGrowthNode.active = true;
+            this.content.string = "<color=#ffffff>新的花田已经解锁\n<color= #f6ff00>去种植鲜花吧</c></c>";
         }
     }
 
@@ -93,6 +101,7 @@ export default class MessagePanel extends PopUpBase {
         this.plantFreeNode.active = false;
         this.pickImmeNode.active = false;
         this.shouquanNode.active = false;
+        this.toGrowthNode.active = false;
     }
     private _sure:boolean = false;
     private toSureTouch(e){
@@ -110,6 +119,8 @@ export default class MessagePanel extends PopUpBase {
             }else if(this._type == MessagePanelType.pickImmediatly){
                 Farm.pickImmediatly = true;
                 EVENT.emit(GameEvent.Scene_To_Farm);
+            }else if(this._type == MessagePanelType.toGrowth){
+                EVENT.emit(GameEvent.FarmScene_To_Growth);
             }
             
         }
