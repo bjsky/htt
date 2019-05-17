@@ -58,8 +58,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 168,
+      "height": 95
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -215,7 +215,7 @@
         "__id__": 18
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 2,
     "_components": [],
     "_prefab": {
@@ -448,7 +448,7 @@
       "__id__": 9
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 4,
     "_components": [
       {
@@ -537,7 +537,7 @@
     "asset": {
       "__uuid__": "ffd35780-4aba-4e22-be45-5baf032e7e88"
     },
-    "fileId": "03UEvbNw9JgboDhe0Ar23d",
+    "fileId": "602aPmwYVGVoxV2ClxfeVQ",
     "sync": false
   },
   {
@@ -548,7 +548,7 @@
       "__id__": 9
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 4,
     "_components": [
       {
@@ -637,7 +637,7 @@
     "asset": {
       "__uuid__": "ffd35780-4aba-4e22-be45-5baf032e7e88"
     },
-    "fileId": "faruabb6BDNJ7TySF/XsHY",
+    "fileId": "ebbkgZ0ANC4qHD4P3xy7rj",
     "sync": false
   },
   {
@@ -801,7 +801,7 @@
         "__id__": 26
       }
     ],
-    "_active": false,
+    "_active": true,
     "_level": 2,
     "_components": [],
     "_prefab": {
@@ -971,7 +971,7 @@
         "__id__": 30
       }
     ],
-    "_active": false,
+    "_active": true,
     "_level": 3,
     "_components": [],
     "_prefab": {
@@ -1060,7 +1060,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -27,
+      "x": -37,
       "y": 4,
       "z": 0
     },
@@ -1154,7 +1154,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 49.14,
+      "width": 78.06,
       "height": 40
     },
     "_anchorPoint": {
@@ -1200,8 +1200,8 @@
     "_srcBlendFactor": 1,
     "_dstBlendFactor": 771,
     "_useOriginalSize": false,
-    "_string": "1.3k",
-    "_N$string": "1.3k",
+    "_string": "10.00k",
+    "_N$string": "10.00k",
     "_fontSize": 26,
     "_lineHeight": 40,
     "_enableWrapText": true,

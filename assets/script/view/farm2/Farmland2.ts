@@ -345,10 +345,18 @@ export default class Farmland2 extends UIBase{
 
     public onGrowthTouch(e){
         if(this._growthGold>0){
-
             this.showPickAnim();
             SOUND.playPickSound();
             Farm2.pickOnce(this.index);
+        }
+    }
+    public onMovePick(){
+        if(this._state == Farmland2State.Growth){
+            if(this._growthGold > 0){
+                this.showPickAnim();
+                SOUND.playPickSound();
+                Farm2.pickOnce(this.index);
+            }
         }
     }
 
@@ -391,7 +399,7 @@ export default class Farmland2 extends UIBase{
             return;
         if(Common.resInfo.gold<this._upCost){
             // UI.showTip("金币不足，收集花田或转盘抽奖");
-            // UI.showTip("金币不足，采摘花田或转盘抽奖");
+            // UI.createPopUp(ResConst.MessgaePanel,{type:MessagePanelType.gotoSlot})
             return;
         }
         this.onUplevel();

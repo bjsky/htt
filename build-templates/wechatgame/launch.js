@@ -188,7 +188,7 @@ window.showBannerAd = function(adId){
 
 let shareCallbackFunc = function(){
   return {
-    title:"划一划，收金币，养花专家就是你！",
+    title:"划一划，收金币，种花专家就是你！",
     imageUrl:"https://s.1233k.com/resShare/share_3.jpg",
     query:"",
   }

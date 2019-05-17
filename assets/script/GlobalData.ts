@@ -46,9 +46,9 @@ export default class GlobalData{
     }
 
     public serverType:number = ServerType.Publish;
-    public version:string = "1.0.2";
+    public version:string = "1.0.3";
     
-    public testAccount:string ="test006"//"test027";
+    public testAccount:string ="test010"//"test027";
     public serverUrl:string =  "wss://wz.1233k.com:8680/websocket"//"wss://www.xh52.top:8580/websocket";
 
     public isIPhoneX:boolean =false;

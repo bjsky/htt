@@ -32,7 +32,7 @@ export default class ShareController{
         this._shareSuccessCB = success;
         this._shareFailCb =fail;
         if(Global.serverType == ServerType.Publish){
-            var title:string ="划一划，收金币，养花专家就是你";
+            var title:string ="划一划，收金币，种花专家就是你！";
             var imgUrl:string ="https://s.1233k.com/resShare/share_3.jpg";
             var query:string ="";
             

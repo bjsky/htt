@@ -16,6 +16,7 @@ import { Farm2 } from "../game/farm2/Farm2Controller";
 import Farmland2 from "../view/farm2/Farmland2";
 import { Guide, GuideInfo } from "../GuideController";
 import { CFG } from "../core/ConfigManager";
+import TouchHandler from "../component/TouchHandler";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -58,6 +59,7 @@ export default class FarmScene extends SceneBase{
 
     @property(cc.Node) nodeTipGrowth: cc.Node = null;
     @property(cc.Node) nodeTipPlant: cc.Node = null;
+    @property(cc.Node) streakNode: cc.Node = null;
 
     // @property(cc.Label) lblWater: cc.Label = null;
     // @property(cc.Node) iconWater: cc.Node = null;
@@ -130,6 +132,7 @@ export default class FarmScene extends SceneBase{
         this.initFarmland();
         this.nextSceneFlower.string = "<color=#7A4414><color=#f04a3d>"+Farm2.getNextSceneFlower()+"</color> 解锁</c>";
         this.addMoveEvent();
+        this.streakNode.active = false;
     }
     private clearScene(){
 
@@ -341,16 +344,55 @@ export default class FarmScene extends SceneBase{
     }
 
     private addMoveEvent(){
-        this.sceneNode.on(cc.Node.EventType.TOUCH_START,this.onSceneTouchStart,this);
+        this.sceneNode.on(TouchHandler.DRAG_START,this.onDragStart,this);
+        this.sceneNode.on(TouchHandler.DRAG_MOVE,this.onDragMove,this);
+        this.sceneNode.on(TouchHandler.DRAG_END,this.onDragEnd,this);
     }
 
     private removeMoveEvent(){
-        this.sceneNode.off(cc.Node.EventType.TOUCH_START,this.onSceneTouchStart,this);
-
+        this.sceneNode.off(TouchHandler.DRAG_START,this.onDragStart,this);
+        this.sceneNode.off(TouchHandler.DRAG_MOVE,this.onDragMove,this);
+        this.sceneNode.off(TouchHandler.DRAG_END,this.onDragEnd,this);
     }
 
-    private onSceneTouchStart(e){
-        console.log("_____touch");
+    private onDragStart(e){
+        this.streakNode.active = true;
+        var loc:cc.Vec2 = this.sceneNode.getComponent(TouchHandler).curLoc;
+        loc = this.streakNode.parent.convertToNodeSpaceAR(loc);
+        console.log(loc);
+        this.streakNode.setPosition(loc);
+    }
+
+    private _curFarmland:Farmland2 =null;
+    private onDragMove(e){
+        var worldloc:cc.Vec2 = this.sceneNode.getComponent(TouchHandler).curLoc;
+        var loc = this.streakNode.parent.convertToNodeSpaceAR(worldloc);
+        this.streakNode.setPosition(loc);
+        var farmlandNode:cc.Node;
+        for(var i:number = 0;i<this.farmlandNodes.length;i++){
+            farmlandNode = this.farmlandNodes[i];
+            //获取target节点在父容器的包围盒，返回一个矩形对象
+            let rect:cc.Rect = farmlandNode.getBoundingBox();
+            //使用target容器转换触摸坐标
+            let point:cc.Vec2 = farmlandNode.parent.convertToNodeSpaceAR(worldloc);
+            //if (cc.rectContainsPoint(rect, targetPoint)) {
+            //Creator2.0使用rect的成员contains方法
+            if (rect.contains(point)) {
+                var farmland:Farmland2 = this.getFarmland2WithIdx(i);
+                if(farmland){
+                    if(farmland!=this._curFarmland){
+                        farmland.onMovePick();
+                    }
+                    this._curFarmland = farmland;
+                }
+                break;
+            }
+        }
+    }
+
+    private onDragEnd(e){
+        this.streakNode.active = false;
+        this._curFarmland = null;
     }
 
     public getGuideNode(nodeName:string):cc.Node{
@@ -369,6 +411,9 @@ export default class FarmScene extends SceneBase{
             node = this.btnToSlot.node;
         }
         return node;
+    }
+    public getMoveGuideNodes():Array<cc.Node>{
+        return [this.getFarmland2WithIdx(1).node,this.getFarmland2WithIdx(0).node]
     }
 
     public onGuideTouch(e){

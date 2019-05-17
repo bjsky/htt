@@ -5,6 +5,7 @@ import { ConfigConst } from "../GlobalData";
 import { EVENT } from "../core/EventController";
 import GameEvent from "../GameEvent";
 import { SOUND } from "../core/SoundManager";
+import ButtonEffect from "../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -25,6 +26,8 @@ export default class UpgradeUI extends PopUpBase{
     lblLv: cc.Label = null;
     @property(cc.RichText)
     lblUnlock: cc.RichText = null;
+    @property(cc.Button)
+    btntoGrowth: cc.Button = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -39,6 +42,23 @@ export default class UpgradeUI extends PopUpBase{
         super.onEnable();
         this.initView();
         SOUND.playLevelupSound();
+        this.btntoGrowth.node.on(ButtonEffect.CLICK_END,this.onGotoGrowth,this);
+    }
+    onDisable(){
+
+        this.btntoGrowth.node.off(ButtonEffect.CLICK_END,this.onGotoGrowth,this);
+    }
+
+    private _sureGo:boolean = false;
+    private onGotoGrowth(e){
+        this._sureGo = true;
+        this.onClose(e);
+    }
+    protected onCloseComplete(){
+        if(this._sureGo){
+            EVENT.emit(GameEvent.FarmScene_To_Growth);
+        }
+        super.onCloseComplete();
     }
 
     private initView(){
@@ -70,10 +90,10 @@ export default class UpgradeUI extends PopUpBase{
             this.lblUnlock.string = "<color=#00FFF6>"+str+"</c>";
         }
     }
-    onCloseComplete(){
-        EVENT.emit(GameEvent.UpgreadUI_Closed);
-        super.onCloseComplete();
-    }
+    // onCloseComplete(){
+    //     EVENT.emit(GameEvent.UpgreadUI_Closed);
+    //     super.onCloseComplete();
+    // }
 
     start () {
 
