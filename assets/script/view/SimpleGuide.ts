@@ -128,11 +128,11 @@ export default class SimpleGuide extends cc.Component {
 
 
     private onDragStart(e){
-        this.streakNode.active = true;
         var loc:cc.Vec2 = this.node.getComponent(TouchHandler).curLoc;
         loc = this.streakNode.parent.convertToNodeSpaceAR(loc);
         console.log(loc);
         this.streakNode.setPosition(loc);
+        this.streakNode.getComponent(cc.MotionStreak).reset();
     }
 
     private onDragMove(e){
@@ -159,7 +159,6 @@ export default class SimpleGuide extends cc.Component {
     }
 
     private onDragEnd(e){
-        this.streakNode.active = false;
         if(this._pickNodes.length == 0){
             this.endMoveGuide();
         }

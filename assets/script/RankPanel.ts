@@ -23,12 +23,6 @@ export enum RankPanelView{
 
 @ccclass
 export default class RankPanel extends PopUpBase {
-
-    @property(cc.Node) nodeRank: cc.Node = null;
-    @property(cc.Node) nodeHelp: cc.Node = null;
-
-    @property(cc.Node) btnHelp: cc.Node = null;
-    @property(cc.Node) btnRank: cc.Node = null;
     @property(cc.Node) btnShare: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
@@ -37,61 +31,31 @@ export default class RankPanel extends PopUpBase {
 
     onEnable(){
         super.onEnable();
-        this.btnHelp.on(ButtonEffect.CLICK_END,this.onHelpClick,this);
-        this.btnRank.on(ButtonEffect.CLICK_END,this.onRankClick,this);
         this.btnShare.on(ButtonEffect.CLICK_END,this.onShareFriend,this);
         
     }
 
     onDisable(){
         super.onDisable();
-        this.btnHelp.off(ButtonEffect.CLICK_END,this.onHelpClick,this);
-        this.btnRank.off(ButtonEffect.CLICK_END,this.onRankClick,this);
         this.btnShare.off(ButtonEffect.CLICK_END,this.onShareFriend,this);
-    }
-
-    private onHelpClick(e){
-        this.setView(RankPanelView.Help)
-    }
-
-    private onRankClick(e){
-        this.setView(RankPanelView.Rank);
     }
 
     private onShareFriend(e){
         Share.shareAppMessage(()=>{
             this.onClose(e);
         },()=>{
-            UI.showTip("分享失败!");
+            UI.showTip("成功分享到群才能查看群排行");
             this.onClose(e);
         });
     }
 
     protected onShowComplete(){
         super.onShowComplete();
-        this.setView(RankPanelView.Rank);
+        this.showRankList();
     }
+    private showRankList(){
+        UI.main.subContent.active = true;
 
-    private _viewType:RankPanelView =0;
-    private setView(type:RankPanelView){
-        if(type == RankPanelView.Rank){
-            UI.main.subContent.active = true;
-            console.log("sub content open")
-        }else{
-            console.log("sub content close")
-            UI.main.subContent.active = false;
-        }
-        if(type == this._viewType) 
-            return;
-        this._viewType = type;
-
-        this.nodeRank.active = false;
-        this.nodeHelp.active = false;
-        if(type == RankPanelView.Rank){
-            this.nodeRank.active = true;
-        }else if(type == RankPanelView.Help){
-            this.nodeHelp.active = true;
-        }
     }
 
     public onClose(e){

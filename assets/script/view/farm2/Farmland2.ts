@@ -346,7 +346,7 @@ export default class Farmland2 extends UIBase{
     public onGrowthTouch(e){
         if(this._growthGold>0){
             this.showPickAnim();
-            SOUND.playPickSound();
+            UI.main.playPickSound();
             Farm2.pickOnce(this.index);
         }
     }
@@ -354,7 +354,7 @@ export default class Farmland2 extends UIBase{
         if(this._state == Farmland2State.Growth){
             if(this._growthGold > 0){
                 this.showPickAnim();
-                SOUND.playPickSound();
+                UI.main.playPickSound();
                 Farm2.pickOnce(this.index);
             }
         }

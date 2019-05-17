@@ -96,7 +96,10 @@ export default class MainUI extends UIBase {
     public onFlyResEnd(e){
         var restype:FlyResType = e.type;
         if(restype == FlyResType.Gold){
-            SOUND.playFGoldSound();
+            if(this._fGoldDelay<0){
+                SOUND.playFGoldSound();
+                this._fGoldDelay = 0.3;
+            }
             this.playGoldBounce();
             this.goldEffect.setValue(Common.resInfo.gold);
         }else if(restype == FlyResType.Flower){
@@ -104,6 +107,19 @@ export default class MainUI extends UIBase {
             this.lblFlower.string = Common.resInfo.flower.toString();
             Farm2.showUnlockChange();
         }
+    }
+    public playPickSound(){
+        if(this._fPickDelay<0){
+            SOUND.playPickSound();
+            this._fPickDelay = 0.6;
+        }
+    }
+
+    private _fGoldDelay:number = 0;
+    private _fPickDelay:number = 0;
+    update(delta){
+        this._fGoldDelay -= delta;
+        this._fPickDelay -= delta;
     }
 
     public playExpBounce(){

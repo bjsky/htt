@@ -141,7 +141,7 @@ export default class SoundManager{
         this.playEffectSound(SoundConst.Water_sound);
     }
     public playPickSound(){
-        this.playEffectSound(SoundConst.Pick_sound,true);
+        this.playEffectSound(SoundConst.Pick_sound);
     }
     public playUplvSound(){
         this.playEffectSound(SoundConst.Uplv_sound);

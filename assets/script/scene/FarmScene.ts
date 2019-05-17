@@ -131,8 +131,6 @@ export default class FarmScene extends SceneBase{
         this.changeState(FarmSceneState.Growth);
         this.initFarmland();
         this.nextSceneFlower.string = "<color=#7A4414><color=#f04a3d>"+Farm2.getNextSceneFlower()+"</color> 解锁</c>";
-        this.addMoveEvent();
-        this.streakNode.active = false;
     }
     private clearScene(){
 
@@ -142,6 +140,7 @@ export default class FarmScene extends SceneBase{
         this.btnPlant.node.off(ButtonEffect.CLICK_END,this.toPlantState,this);
         this.btnGrowth.node.off(ButtonEffect.CLICK_END,this.toGrowthState,this);
         this._farmlandNodeDic = {};
+
         this.removeMoveEvent();
     }
     private onLbTouch(e){
@@ -150,10 +149,10 @@ export default class FarmScene extends SceneBase{
     private onRankClick(e){
         
         if(Global.serverType == ServerType.Publish){
-            if(Common.userInfo.level<3){
-                UI.showTip("排行榜3级开放");
-                return;
-            }
+            // if(Common.userInfo.level<3){
+            //     UI.showTip("排行榜3级开放");
+            //     return;
+            // }
             this.onInitUserInfo(null);
             // Wechat.getUserInfo((userInfo)=>{
             //     if(userInfo==null){
@@ -209,11 +208,15 @@ export default class FarmScene extends SceneBase{
             {
                 this.btnGrowth.node.active = false;
                 this.btnPlant.node.active = true;
+
+                this.addMoveEvent();
             }break;
             case FarmSceneState.Plant:
             {
                 this.btnGrowth.node.active = true;
                 this.btnPlant.node.active = false;
+
+                this.removeMoveEvent();
             }break;
         }
 
@@ -361,6 +364,7 @@ export default class FarmScene extends SceneBase{
         loc = this.streakNode.parent.convertToNodeSpaceAR(loc);
         console.log(loc);
         this.streakNode.setPosition(loc);
+        this.streakNode.getComponent(cc.MotionStreak).reset();
     }
 
     private _curFarmland:Farmland2 =null;
@@ -391,7 +395,6 @@ export default class FarmScene extends SceneBase{
     }
 
     private onDragEnd(e){
-        this.streakNode.active = false;
         this._curFarmland = null;
     }
 

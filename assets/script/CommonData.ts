@@ -50,6 +50,8 @@ export default class CommonData {
         this._serverTime = data.serverTime;
         this.userInfo.initFromServer(data.userInfo);
         this.resInfo.initFormServer(data.resInfo);
+
+        Wechat.setUserCloudStorage("flower",this.resInfo.flower.toString());
         // Farm.initFromServer(data.farmlands);
         Farm.initUnlock(data.unlockFarmland);
 
@@ -87,8 +89,8 @@ export default class CommonData {
     public updateUserInfo(data:SUserInfo){
         var levelPrev = this.userInfo.level;
         this.userInfo.updateInfo(data);
-        Wechat.setUserCloudStorage("level",this.userInfo.level.toString());
-        Wechat.setUserCloudStorage("duty",this.userInfo.title.toString());
+        // Wechat.setUserCloudStorage("level",this.userInfo.level.toString());
+        // Wechat.setUserCloudStorage("duty",this.userInfo.title.toString());
         var levelup = this.userInfo.level - levelPrev>0;
         if(levelup){
             this.onUserLevelUp();

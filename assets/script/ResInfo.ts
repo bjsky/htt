@@ -5,6 +5,7 @@ import { CFG } from "./core/ConfigManager";
 import { EVENT } from "./core/EventController";
 import GameEvent from "./GameEvent";
 import { ResType } from "./message/MsgAddRes";
+import { Wechat } from "./WeChatInterface";
 
 export default class ResInfo {
     //精力
@@ -35,6 +36,7 @@ export default class ResInfo {
         }
         if(this.flower != preFlower){
             EVENT.emit(GameEvent.RES_Change,{type:ResType.Flower});
+            Wechat.setUserCloudStorage("flower",this.flower.toString());
         }
     }
 
