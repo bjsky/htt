@@ -26,8 +26,8 @@ export default class UpgradeUI extends PopUpBase{
     lblLv: cc.Label = null;
     @property(cc.RichText)
     lblUnlock: cc.RichText = null;
-    @property(cc.Button)
-    btntoGrowth: cc.Button = null;
+    // @property(cc.Button)
+    // btntoGrowth: cc.Button = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -42,11 +42,11 @@ export default class UpgradeUI extends PopUpBase{
         super.onEnable();
         this.initView();
         SOUND.playLevelupSound();
-        this.btntoGrowth.node.on(ButtonEffect.CLICK_END,this.onGotoGrowth,this);
+        // this.btntoGrowth.node.on(ButtonEffect.CLICK_END,this.onGotoGrowth,this);
     }
     onDisable(){
 
-        this.btntoGrowth.node.off(ButtonEffect.CLICK_END,this.onGotoGrowth,this);
+        // this.btntoGrowth.node.off(ButtonEffect.CLICK_END,this.onGotoGrowth,this);
     }
 
     private _sureGo:boolean = false;

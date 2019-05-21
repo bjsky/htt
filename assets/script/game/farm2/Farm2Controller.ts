@@ -33,14 +33,21 @@ export default class Farm2Controller {
             this._farmlandMap[farmland.index] = farmland;
         });
         var unlockFarmland:FarmlandInfo = null;
+
+        var lockedIndex:number = this.getFarmlandLockedIndex();
         for(var i:number=0 ;i<this.Farmland_Count;i++){
             if(this._farmlandMap[i]== undefined){
                 unlockFarmland = new FarmlandInfo();
                 unlockFarmland.index = i;
+                var isUnlock:boolean = lockedIndex==-1?true:i<lockedIndex;
+                if(isUnlock){
+                    unlockFarmland.initUnlock();
+                }
                 this._farmlandMap[i] = unlockFarmland;
             }
         }
 
+        this.updateMinTreeType();
         this.Growth_Max_Count = Number(CFG.getCfgByKey(ConfigConst.Constant,"key","goldStageCount")[0].value)
     }
     public getFarmlandLockedIndex():number{
@@ -50,7 +57,7 @@ export default class Farm2Controller {
         for(var key in lockCfg){
             var needFlower:number = Number(lockCfg[key].unlockFlower);
             if(Common.resInfo.flower < needFlower){
-                lockedIndex = Number(key)-1;
+                lockedIndex = Number(lockCfg[key].index);
                 break;
             }
         }
@@ -88,21 +95,27 @@ export default class Farm2Controller {
             return null;
         }
     }
-    public getIndexCanUp(index:number){
-        var minTreeType:number = NaN;
+
+    private _mintreeType:number = NaN;
+    private updateMinTreeType(){
+        this._mintreeType = NaN;
         for(var i:number=0 ;i<this.Farmland_Count;i++){
             var farmland:FarmlandInfo = this.getFarmlandAtIndex(i);
             if(farmland.treeType>0){
-                if(isNaN(minTreeType)){
-                    minTreeType = farmland.treeType;
+                if(isNaN(this._mintreeType)){
+                    this._mintreeType = farmland.treeType;
                 }else{
-                    minTreeType = Math.min(minTreeType,farmland.treeType);
+                    this._mintreeType = Math.min(this._mintreeType,farmland.treeType);
                 }
             }
         }
-        var cur:FarmlandInfo = this.getFarmlandAtIndex(index);
-        return isNaN(minTreeType)?true:(cur.treeType<=minTreeType+1);
+        console.log("updateMintreeType:",this._mintreeType)
     }
+    public getIndexCanup(index:number){
+        var cur:FarmlandInfo = this.getFarmlandAtIndex(index);
+        return isNaN(this._mintreeType)?true:(cur.treeType<=this._mintreeType+1);
+    }
+
 
     public unlockChangeObj:any = null;
     public checkUnlockChange(){
@@ -122,6 +135,12 @@ export default class Farm2Controller {
     }
     public showUnlockChange(){
         if(this.unlockChangeObj!=null){
+            var unlockFarmland:FarmlandInfo = new FarmlandInfo();
+            unlockFarmland.index = this.unlockChangeObj.index;
+            unlockFarmland.initUnlock();
+            this._farmlandMap[unlockFarmland.index] = unlockFarmland;
+
+            this.updateMinTreeType();
             EVENT.emit(GameEvent.Unlock_Change,this.unlockChangeObj);
             this.unlockChangeObj = null;
         }
@@ -129,12 +148,20 @@ export default class Farm2Controller {
 
     public plantFarmland(treeType:number,index:number,cost:number){
         var info:FarmlandInfo = this.stageFarmland(index);
-        var addFlower:number = Number(CFG.getCfgDataById(ConfigConst.Flower,treeType).addFlower);
 
-        NET.send(MsgUpdateFarm.create(index,treeType,1,info.growthStartTime,info.stageGold,cost,addFlower),(msg:MsgPlant)=>{
+        var level:number = 0;
+        if(treeType>-1){
+            level = 1;
+        }else{
+            treeType = info.treeType;
+            level = info.level+1;
+        }
+        var addFlower:number = Number(CFG.getCfgDataById(ConfigConst.Flower,treeType).addFlower);
+        NET.send(MsgUpdateFarm.create(index,treeType,level,info.growthStartTime,info.stageGold,cost,addFlower),(msg:MsgPlant)=>{
             if(msg && msg.resp){
                 Common.resInfo.updateInfo(msg.resp.resInfo);
                 this.updateFarmland(msg.resp.farmland);
+                this.updateMinTreeType();
                 this.checkUnlockChange();
                 EVENT.emit(GameEvent.Plant_Tree,{index:index,seedId:msg.resp.farmland.treeType});
             }

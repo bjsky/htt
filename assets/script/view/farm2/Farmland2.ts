@@ -79,6 +79,7 @@ export default class Farmland2 extends UIBase{
     @property(cc.Label) curFlower: cc.Label = null;
     @property(cc.Label) addGold: cc.Label = null;
     @property(cc.Node) uplvMask: cc.Node = null;
+    @property(cc.Node) upNode: cc.Node = null;
 
     //growth
     @property(cc.ProgressBar) growthPro: cc.ProgressBar = null;
@@ -107,6 +108,7 @@ export default class Farmland2 extends UIBase{
         EVENT.on(GameEvent.Farm_State_Change,this.onFarmStateChange,this);
         EVENT.on(GameEvent.RES_Change,this.onResChange,this);
         EVENT.on(GameEvent.Plant_Tree,this.onPlantTree,this);
+        EVENT.on(GameEvent.Unlock_Change,this.onUnlockChange,this);
 
         this.plantBg.node.on(cc.Node.EventType.TOUCH_START,this.onPlantTouch,this);
         this.growthBg.node.on(cc.Node.EventType.TOUCH_START,this.onGrowthTouch,this);
@@ -123,6 +125,7 @@ export default class Farmland2 extends UIBase{
         EVENT.off(GameEvent.Farm_State_Change,this.onFarmStateChange,this);
         EVENT.off(GameEvent.RES_Change,this.onResChange,this);
         EVENT.off(GameEvent.Plant_Tree,this.onPlantTree,this);
+        EVENT.off(GameEvent.Unlock_Change,this.onUnlockChange,this);
 
         this.plantBg.node.off(cc.Node.EventType.TOUCH_START,this.onPlantTouch,this);
         this.growthBg.node.off(cc.Node.EventType.TOUCH_START,this.onGrowthTouch,this);
@@ -160,11 +163,12 @@ export default class Farmland2 extends UIBase{
     }
 
     private onPlantTree(e){
-
-        var index:number = e.index;
-        if(this.index!=index){
+        // if(e.index !=this.index){
             this.updateUplvMask();
-        }
+        // }
+    }
+    private onUnlockChange(e){
+        this.updateUplvMask();
     }
 
     private updateView(){
@@ -172,41 +176,31 @@ export default class Farmland2 extends UIBase{
         var isUnlock:boolean = lockedIndex>-1?this.index<lockedIndex:true;
         if(this._curState == FarmSceneState.Growth){
             if(this._farmland.treeType == 0){
-                if(isUnlock){
-                    this._state = Farmland2State.UnLock;
-                }else{
-                    if(this.index == lockedIndex){
+                if(this.index == lockedIndex){
+                // if(isUnlock){
+                //     this._state = Farmland2State.UnLock;
+                // }else{
+                //     if(this.index == lockedIndex){
                         this._state = Farmland2State.Lock;
                     }else{
                         this._state = Farmland2State.Unplant;
-                    }
+                //     }
                 }
             }else{
                 this._state = Farmland2State.Growth;
             }
         }else if(this._curState == FarmSceneState.Plant){
             if(this._farmland.treeType == 0){
-                if(isUnlock){
-                    this._state = Farmland2State.UnLock;
-                }else if(this.index == lockedIndex){
+                if(this.index == lockedIndex){
+                // if(isUnlock){
+                //     this._state = Farmland2State.UnLock;
+                // }else if(this.index == lockedIndex){
                     this._state = Farmland2State.Lock;
                 }else{
                     this._state = Farmland2State.Unplant;
                 }
             }else{
-                var cfg =CFG.getCfgDataById(ConfigConst.Flower,this._farmland.treeType);
-                if(this._farmland.level >= Number(cfg.maxLevel)){
-                    var lockTreeId = Number(cfg.nextId);
-                    if(lockTreeId>0){
-                        this._state = Farmland2State.Plant;
-                        this._lockTreeId = lockTreeId;
-                    }else{
-                        this._state = Farmland2State.upLv;
-                        this._isMaxLevel = true;
-                    }
-                }else{
                     this._state = Farmland2State.upLv;
-                }
             }
         }
         this.uplvNode.active = false;
@@ -292,26 +286,45 @@ export default class Farmland2 extends UIBase{
 
     private _upCost:number = 0;
     private _canUp:boolean = false;
+    private _uplvState:number = 0;
     private showUpgrade(){
         var cfg:any = CFG.getCfgDataById(ConfigConst.Flower,this._farmland.treeType);
         if(cfg){
             this.upLvName.string = cfg.name;
             var totalLevel:number = Number(cfg.maxLevel);
             this.levelStr.string = this._farmland.level+"/"+totalLevel;
-            this._upCost = Number(cfg.upCost);
-            this.upLvCost.string = StringUtil.formatReadableNumber(this._upCost);
-            if(Common.resInfo.gold<this._upCost){
-                this.upLvCost.node.color = new cc.Color().fromHEX("#ff0000");
-            }else{
-                this.upLvCost.node.color = new cc.Color().fromHEX("#863819");
-            }
             this.levelPro.progress = this._farmland.level/totalLevel;
             this.curFlower.string = cfg.flowerLevel;
+            this._isMaxLevel = false;
+            if(this._farmland.level < Number(cfg.maxLevel)-1){
+                this._uplvState = 0;
+            }else if(this._farmland.level == Number(cfg.maxLevel)-1){
+                    this._uplvState = 1;
+                    this._lockTreeId =  Number(cfg.nextId);
+            }else{
+                this._uplvState = 0;
+                this._isMaxLevel = true;
+            }
+            if(this._isMaxLevel){
+                this.upNode.active = false;
+                this.levelPro.node.x =0;
+            }else{
+                this.upNode.active = true;
+                this.levelPro.node.x = -8;
+                this._upCost = Number(cfg.upCost);
+                this.upLvCost.string = StringUtil.formatReadableNumber(this._upCost);
+                if(Common.resInfo.gold<this._upCost){
+                    this.upLvCost.node.color = new cc.Color().fromHEX("#ff0000");
+                }else{
+                    this.upLvCost.node.color = new cc.Color().fromHEX("#863819");
+                }
+            }
         }
         this.updateUplvMask();
     }
     private updateUplvMask(){
-        this._canUp = Farm2.getIndexCanUp(this.index);
+        // this._canUp = true;
+        this._canUp = Farm2.getIndexCanup(this.index);
         this.uplvMask.active =!this._canUp;
     }
 
@@ -366,9 +379,12 @@ export default class Farmland2 extends UIBase{
             // UI.createPopUp(ResConst.MessgaePanel,{type:MessagePanelType.gotoSlot})
             return;
         }
+        this.onPlant(this._plantCost);
+    }
+    private onPlant(cost:number){
 
         SOUND.playUplvSound();
-        Farm2.plantFarmland(this._lockTreeId,this.index,this._plantCost);
+        Farm2.plantFarmland(this._lockTreeId,this.index,cost);
     }
 
     private showPickAnim(){
@@ -397,12 +413,17 @@ export default class Farmland2 extends UIBase{
             !this._canUp ||
             Guide.isGuide)
             return;
-        if(Common.resInfo.gold<this._upCost){
-            // UI.showTip("金币不足，收集花田或转盘抽奖");
-            // UI.createPopUp(ResConst.MessgaePanel,{type:MessagePanelType.gotoSlot})
-            return;
+        if(this._uplvState == 0){
+            if(Common.resInfo.gold<this._upCost){
+                // UI.showTip("金币不足，收集花田或转盘抽奖");
+                // UI.createPopUp(ResConst.MessgaePanel,{type:MessagePanelType.gotoSlot})
+                return;
+            }
+            this.onUplevel();
+        }else if(this._uplvState == 1){
+            this.onPlant(this._upCost);
         }
-        this.onUplevel();
+        
     }
 
     private onUplevel(){
@@ -415,7 +436,7 @@ export default class Farmland2 extends UIBase{
     private showGoldTextFly(){
         var cfg:any = CFG.getCfgDataById(ConfigConst.Flower,this._farmland.treeType);
         if(cfg){
-            this.addGold.string = "+"+cfg.goldUp;
+            this.addGold.string = "+1"//+cfg.goldUp;
             var rdPos:cc.Vec2 = cc.v2(Math.floor(Math.random()*30)-15,Math.floor(Math.random()*40)-20);
             this.addGold.node.setPosition(rdPos.add(cc.v2(0,140)));
             this.addGold.node.active = true;
@@ -433,10 +454,10 @@ export default class Farmland2 extends UIBase{
 
     public onGuideUpLevel(){
         var plant:boolean = false;
-        if(this._state == Farmland2State.upLv){
+        if(this._uplvState == 0){
             this.onUplevel();
-        }else if(this._state == Farmland2State.Plant){
-            this.onPlantTouch(null);
+        }else if(this._uplvState == 1){
+            this.onPlant(this._upCost);
             plant = true;
         }
         return plant;

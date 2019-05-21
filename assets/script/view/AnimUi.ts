@@ -301,7 +301,7 @@ export default class AnimUi extends UIBase {
         var moveTo = this.starNode.convertToNodeSpaceAR(toPos);
         var move;
         if(res == FlyResType.Gold){
-            move = cc.moveTo(0.4,moveTo).easing(cc.easeIn(1.5));
+            move = cc.moveTo(0.5,moveTo).easing(cc.easeIn(2));
             star.scale = 0.6;
         }else{
             var moveCenter:cc.Vec2 = cc.v2(moveFrom.x+(moveTo.x - moveFrom.x)/2,moveFrom.y-(moveTo.y - moveFrom.y)/8);

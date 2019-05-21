@@ -45,8 +45,8 @@ export default class GlobalData{
         return GlobalData._instance;
     }
 
-    public serverType:number = ServerType.Publish;
-    public version:string = "1.0.4";
+    public serverType:number = ServerType.Client;
+    public version:string = "1.0.5";
     
     public testAccount:string ="test010"//"test027";
     public serverUrl:string =  "wss://wz.1233k.com:8680/websocket"//"wss://www.xh52.top:8580/websocket";

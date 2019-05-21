@@ -1,6 +1,7 @@
 import { SFarmlandInfo } from "./message/MsgLogin";
 import { CFG } from "./core/ConfigManager";
 import { ConfigConst } from "./GlobalData";
+import { Common } from "./CommonData";
 
 export default class FarmlandInfo{
     
@@ -33,6 +34,17 @@ export default class FarmlandInfo{
         this.level = stree.level;
         this.stageGold = stree.stageGold;
 
+        if(this.treeType>0){
+            var cfg:any = CFG.getCfgDataById(ConfigConst.Flower,this.treeType);
+            this.flowerLevel = Number(cfg.flowerLevel);
+        }
+    }
+
+    public initUnlock(){
+        this.treeType = 1;
+        this.growthStartTime = Common.getServerTime();
+        this.level = 1;
+        this.stageGold = 0;
         if(this.treeType>0){
             var cfg:any = CFG.getCfgDataById(ConfigConst.Flower,this.treeType);
             this.flowerLevel = Number(cfg.flowerLevel);
